@@ -4,6 +4,8 @@ import hashlib
 import hmac 
 import requests 
 import json
+from xml.dom import minidom
+
 #Your FactSet Information 
 
 username = 'FDS_DEMO_FE' #Insert your FactSet Username provided by your FactSet Account team 
@@ -62,6 +64,7 @@ Service_url = 'https://datadirect.factset.com/services/auth-test'
 
 r = requests.get(Service_url,headers=header)
 
+
 #update counter and write to key.txt
 counter += 1
 with open(r'C:\Users\mpark\OneDrive - FactSet\Desktop\FDSLoader-Windows-2.11.1.0\key2.txt','w') as f:
@@ -81,8 +84,8 @@ print('Counter: ', counter)
 
 
 #search parameters:
-sd ='0' #start date
-ed ='-60' #end date
+sd ='20191001' #start date
+ed ='20191031' #end date
 payload = { 'report': 'search',
 
 #define the request type as a search
