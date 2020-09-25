@@ -33,19 +33,37 @@ def save_sp500_tickers():
     return tickers
 
 tickers = save_sp500_tickers()
+
 # %%
+
+# Downloading & Adjusting prices
 prices = yf.download(tickers, start='2020-01-01')['Adj Close']
-# %%
 rs = prices.apply(np.log).diff(1)
+
+
+
 # %%
+
+# Daily returns chart
+
 rs.plot(legend=0, figsize=(10,6), grid=True, title='Daily Returns of the Stocks in the S&P500')
 plt.tight_layout()
 plt.savefig('tmp.png')
+
+
+
 # %%
+
+# Cummulative return chart
+
 (rs.cumsum().apply(np.exp)).plot(legend=0, figsize=(10,6), grid=True, title='Cumulative Returns of the Stocks in the S&P500')
 plt.tight_layout()
 plt.savefig('tmp.png')
+
+
 # %%
+
+# First PCA 
 
 pca = PCA(1).fit(rs.fillna(0))
 # we set 1 as a component because that would be the weight
