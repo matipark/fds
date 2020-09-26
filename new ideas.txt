@@ -31,3 +31,6 @@ https://youtu.be/zQ_rL6DjWEU
 
 Compare by sector/country pre-post covid.
 Index it with price returns and show which industries has been trending up/down
+
+
+6. Tick History
