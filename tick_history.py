@@ -75,6 +75,8 @@ d["output_dataframe1"]
 #%%
 
 
+tick_history_connectivity(ticker, start_date, end_date, start_time, end_time, interval)
+
 
 # %%
 
@@ -84,21 +86,6 @@ d["output_dataframe1"]
 
 # json_normalize
 # https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.json_normalize.html
-
-
-
-
-#%%
-
-import pandas as pd
-
-numbers = {'set_of_numbers': [1,2,3,4,5,6,7,8,9,10]}
-df = pd.DataFrame(numbers,columns=['set_of_numbers'])
-
-df.loc[df['set_of_numbers'] <= 4, 'equal_or_lower_than_4?'] = 'True' 
-df.loc[df['set_of_numbers'] > 4, 'equal_or_lower_than_4?'] = 'False' 
-
-print (df)
 
 
 
