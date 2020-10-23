@@ -4,8 +4,8 @@ declare @pricedate date
 declare @histdate date
 declare @daysback integer
 declare @daysahead integer
-set @hldrid = '000KLZ-E'
-set @histdate = '2019-06-01'
+set @hldrid = '08D3XB-E'
+set @histdate = '2020-09-01'
 --as of date
 set @daysback = -730
 --number of days prior to the @histdate that the holdings would be considered valid
@@ -14,13 +14,15 @@ set @daysahead = 0
 set @pricedate = (select max(price_date) from own_v5.own_sec_prices
 where price_date between dateadd(dd,@daysback,@histdate) and dateadd(dd,@daysahead,@histdate))
 
-
+-- 08D3XB-E BlackRock
+-- 002FYS-E - Van
+-- 000KLZ-E Fidelity
 
 --CREATE TABLE sdfdemo_scratch.dbo.TAB_FIDEL_FF_2(factset_entity_id char(8) not null, entity_proper_name varchar(200) not null, turnover_label varchar(200) null, style varchar(200) null, objectives varchar(200) null, fsym_id char(8) not null, proper_name varchar(200) not null, exchange varchar(40) null, country_desc varchar(24) null, l1_name varchar(200) null, l2_name varchar(200) null, l3_name varchar(200) null, l4_name varchar(200) null, position float null, mkt_val float null, report_date date null, as_of_date date not null, primary key (factset_entity_id, fsym_id, as_of_date))
 
 --drop TABLE sdfdemo_scratch.dbo.TAB_FIDEL_FF
 
-insert into sdfdemo_scratch.dbo.TAB_FIDEL_FF_2
+--insert into sdfdemo_scratch.dbo.TAB_BLACK_FF_2
 
 select --top 100
 

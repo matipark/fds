@@ -89,3 +89,20 @@ printOutFactletResults(df)
 df = fsod.ExtractFormulaHistory("5386095", "P_PRICE(08/31/2017),P_PRICE_BID(08/31/2017),P_PRICE_ASK(08/31/2017)", "08/31/2017"); 
 printOutFactletResults(df)
 # %%
+
+
+
+df = fsod.ExtractFormulaHistory(
+    "AAPL",
+    "FF_FINANCIAL_STATEMENTS_DATA(INC,QTR_D,0,0,,NOAUDIT)",
+    ""
+)
+
+# %%
+df = fsod.ExtractFormulaHistory("xom,stl-no,fds,ibm,efc,appl,goog", "fg_eps(0,-1m,d)", "")
+
+df2=convertToNumpy(df)
+
+dataset = pd.DataFrame({'ticker':df2[:,0],'Date':df2[:,1],'value':df2[:,2]})
+print(dataset)
+# %%
