@@ -11,6 +11,13 @@ PyInstaller.__main__.run([
     # './chromedriver.exe;./'
 ])
 
-
+# DO NOT FORGET TO CHANGE E-MAIL
+# DO NOT FORGET TO REMOVE SUBMIT BUTTON IF IN TEST MODE
 
 # %%
+
+
+
+
+# https://pyinstaller.readthedocs.io/en/stable/usage.html?highlight=noconsole#options
+# https://www.zacoding.com/en/post/python-selenium-to-exe/
