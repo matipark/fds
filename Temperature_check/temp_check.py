@@ -16,7 +16,7 @@ import random #function to randomly select temperature
 browser = webdriver.Chrome()
 url = 'https://forms.office.com/Pages/ResponsePage.aspx?id=44eb_0jFPUuHgnz0e4bAV65UHqQ6ktFBh9hsUi-g1BxUQTBKTllUMDEwTVVMTk5IVzg4OUNYUEFBUi4u'
 
-email = 'rochan@factset.com'
+email = 'mpark@factset.com'
 
 
 
