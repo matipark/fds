@@ -29,13 +29,18 @@ config.setConfig(ConfigOptions.DataDirectUserName, "FDS_DEMO_FE_410734_SERVICES"
 config.setConfig(ConfigOptions.DataDirectPassword, "4XJJNU4Jad6Ftf8n")
 
 
-
 # %%
 
 df = fsod.ExtractFormulaHistory("004561,005367,006670,008118,037537,038641,040520,040650,040828,041610,042703,044788", "FE_VALUATION(PE,MEAN,NTMA,,0M,,,\'\'),FG_GICS_SECTOR", "0M")
 
+printOutFactletResults(df)
+
+
+#%%
+
 import numpy as np
 import pandas as pd
+
 def convertToNumpy(df):
     if(df.hasError()):
         df.throwErrorIfAnyIsPresent()
@@ -63,6 +68,7 @@ df2=convertToNumpy(df)
 
 dataset = pd.DataFrame({'Ticker':df2[:,0],'Date':df2[:,1],'PE NTM':df2[:,2],'Sector':df2[:,3]})
 print(dataset)
+
 
 # %%
 
