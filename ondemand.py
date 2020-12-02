@@ -54,16 +54,6 @@ def convertToNumpy(df):
         pdf = np.array(dataset)
     return pdf
 
-def csvToArray(n):
-    data = []
-    with open(n, 'r') as csvFile:
-        next(csvFile)
-        reader = csv.reader(csvFile)
-        for row in reader:
-            data.append(row[1])
-    return data
-    csvFile.close()
-
 df2=convertToNumpy(df)
 
 dataset = pd.DataFrame({'Ticker':df2[:,0],'Date':df2[:,1],'PE NTM':df2[:,2],'Sector':df2[:,3]})
@@ -90,10 +80,17 @@ printOutFactletResults(df);
 df = fsod.ExtractFormulaHistory("005930-kr", "P_PRICE(0,-2AY,,,,9)", "0:-2AY:D"); 
 printOutFactletResults(df)
 
+df2=convertToNumpy(df)
+
+dataset = pd.DataFrame({'Ticker':df2[:,0],'Date':df2[:,1],'Price':df2[:,2]})
+print(dataset)
+
 
 # %%
 df = fsod.ExtractFormulaHistory("5386095", "P_PRICE(08/31/2017),P_PRICE_BID(08/31/2017),P_PRICE_ASK(08/31/2017)", "08/31/2017"); 
 printOutFactletResults(df)
+
+
 # %%
 
 
@@ -111,4 +108,55 @@ df2=convertToNumpy(df)
 
 dataset = pd.DataFrame({'ticker':df2[:,0],'Date':df2[:,1],'value':df2[:,2]})
 print(dataset)
+
+
+
+#%%
+
+##UploadToOFDB##
+
+
+uFactlet = UploadFactlet("TestOFDB_Python", Array[str](["ID","Date","my_price","my_volume"]), Array[str](["Id","Date","Double","Double"]))
+dates = ["04/10/2013","04/11/2013","04/12/2013"]
+fds_price = [93.33, float('nan'), 92.65]
+fds_volume = [388.205, float('nan'), 359.396]
+xom_price = [88.68, float('nan'), 89.22]
+xom_volume = [14826.0, float('nan'), 14980.0]
+
+for i in range(len(dates)):
+    uFactlet.addDataPoint('FDS')
+    uFactlet.addDataPoint(dates[i])
+    uFactlet.addDataPoint(fds_price[i])
+    uFactlet.addDataPoint(fds_volume[i])
+
+for i in range(len(dates)):
+    uFactlet.addDataPoint('XOM')
+    uFactlet.addDataPoint(dates[i])
+    uFactlet.addDataPoint(xom_price[i])
+    uFactlet.addDataPoint(fds_volume[i])
+    
+df = fsod.executeFactlet(uFactlet)
+df.throwErrorIfAnyIsPresent()
+
+
+
+
 # %%
+
+# Optional arguments must go in bracket
+# Directory in cap letter
+
+data = fsod.ExtractOFDBUniverse('PERSONAL:TESTOFDB_PYTHON')
+printOutFactletResults(data)
+
+# ExtractOFDBItem
+data = fsod.ExtractOFDBItem('PERSONAL:TESTOFDB_PYTHON','FDS,XOM','MY_PRICE,MY_VOLUME','')
+printOutFactletResults(data)
+
+# Screening
+data=fsod.ExtractScreenUniverse('CLIENT:ASIA_QUANT_DEMO',['All','Y','includeColumns','1'])
+printOutFactletResults(data)
+
+#AT3
+data = fsod.ExtractAlphaTestingSnapshot('', 'Y','CLIENT:ASIA EX JAPAN QUANT DEMO','CONSTITUENTS', 'ALL', '', '', '', '', '', '') 
+printOutFactletResults(data)
