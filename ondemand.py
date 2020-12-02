@@ -69,6 +69,8 @@ df2=convertToNumpy(df)
 dataset = pd.DataFrame({'Ticker':df2[:,0],'Date':df2[:,1],'GDP':df2[:,2]})
 print(dataset)
 
+#%%
+
 
 
 df = fsod.ExtractVectorFormula("PCMC", "PID(-1)");
@@ -95,11 +97,6 @@ printOutFactletResults(df)
 
 
 
-df = fsod.ExtractFormulaHistory(
-    "AAPL",
-    "FF_FINANCIAL_STATEMENTS_DATA(INC,QTR_D,0,0,,NOAUDIT)",
-    ""
-)
 
 # %%
 df = fsod.ExtractFormulaHistory("xom,stl-no,fds,ibm,efc,appl,goog", "fg_eps(0,-1m,d)", "")
