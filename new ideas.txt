@@ -27,10 +27,14 @@ https://youtu.be/zQ_rL6DjWEU
 
 
 
-5. LinkUp
+5. LinkUp (GICS vs RBICS)
 
 Compare by sector/country pre-post covid.
 Index it with price returns and show which industries has been trending up/down
 
 
 6. Tick History
+
+
+
+8. Supply chain
