@@ -2,7 +2,7 @@
 
 
 1. compare ESG 
-
+socially responsible investing
 
 2. How all of macro series affect / decoupling of macro indicators by country/sector in timeseries (before/after covid)
 Ondemand to pull econ data + benchmark return
