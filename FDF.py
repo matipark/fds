@@ -47,10 +47,22 @@ finally:
 
 ######################################
 
+
+# Expanding all brakets
+open_bracket = browser.find_elements_by_css_selector('[alt*="Expand"]')
+
+for i in open_bracket:
+  i.click()
+
+
+
+#%%
+
+
 #List of FULL items dictionary
 items_list = [] 
 
-elem = browser.find_elements_by_class_name('MainContent_treeBundlesNew_0')
+elem = browser.find_elements_by_class_name('MainContent_treeBundles_0')
 
 for i in elem:
   field_name = i.get_attribute("innerHTML")
@@ -71,7 +83,7 @@ for i in items_list:
 #%%
 
 # Data transformation to fit checkbox
-selected_items_code = [w.replace('Newt', 'Newn') for w in selected_items_code]
+selected_items_code = [w.replace('lest', 'lesn') for w in selected_items_code]
 
 selected_items_code_comp= []
 
@@ -85,14 +97,6 @@ for i in selected_items_code:
 # selected_items_code_comp
 
 
-# %%
-
-# Expanding all brakets
-open_bracket = browser.find_elements_by_css_selector('[alt*="Expand"]')
-
-for i in open_bracket:
-  i.click()
-
   
 # %%
 
@@ -100,3 +104,5 @@ for i in open_bracket:
 
 for i in selected_items_code_comp:
   browser.find_element_by_id(i).click()
+
+# %%
