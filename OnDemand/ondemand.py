@@ -31,6 +31,8 @@ config.setConfig(ConfigOptions.DataDirectPassword, "4XJJNU4Jad6Ftf8n")
 
 # %%
 
+# PE NTM
+
 df = fsod.ExtractFormulaHistory("004561,005367,006670,008118,037537,038641,040520,040650,040828,041610,042703,044788", "FE_VALUATION(PE,MEAN,NTMA,,0M,,,\'\'),FG_GICS_SECTOR", "0M")
 
 printOutFactletResults(df)
@@ -62,33 +64,48 @@ print(dataset)
 
 # %%
 
+
+# Econ data
 df = fsod.ExtractEconData('','FDS_ECON_DATA(\'HK.GDPNNSA\',0,-1AY,Q,STEP,SUM,1)') 
-
 df2=convertToNumpy(df)
-
 dataset = pd.DataFrame({'Ticker':df2[:,0],'Date':df2[:,1],'GDP':df2[:,2]})
 print(dataset)
+
+
 
 #%%
 
 
+# S&P 500 universe
+df = fsod.ExtractDataSnapshot("","","6/30/2020",["UNIVERSE","FG_CONSTITUENTS(SP50,6/30/2020,CLOSE)"]) 
+printOutFactletResults(df)
 
-df = fsod.ExtractVectorFormula("PCMC", "PID(-1)");
-printOutFactletResults(df); 
+df2=convertToNumpy(df)
+dataset = pd.DataFrame({'Ticker':df2[:,0],'Date':df2[:,1],'Name':df2[:,2]})
+print(dataset)
+
+
+df = fsod.ExtractDataSnapshot("","","6/30/2020",["UNIVERSE","(FREF_LISTING_EXCHANGE='PSE' AND FREF_SECURITY_TYPE='ETF_ETF')=1"]) 
+printOutFactletResults(df)
+
+
 
 
 # %%
 
+# Prices
+
 df = fsod.ExtractFormulaHistory("005930-kr", "P_PRICE(0,-2AY,,,,9)", "0:-2AY:D"); 
 printOutFactletResults(df)
-
 df2=convertToNumpy(df)
-
 dataset = pd.DataFrame({'Ticker':df2[:,0],'Date':df2[:,1],'Price':df2[:,2]})
 print(dataset)
 
 
 # %%
+
+# Prices for bid, ask, close
+
 df = fsod.ExtractFormulaHistory("5386095", "P_PRICE(08/31/2017),P_PRICE_BID(08/31/2017),P_PRICE_ASK(08/31/2017)", "08/31/2017"); 
 printOutFactletResults(df)
 
@@ -96,6 +113,23 @@ printOutFactletResults(df)
 # %%
 
 
+# Estimates
+
+df = fsod.EstimatesOnDemand('NFLX-US', 'EPS', 'Consensus', '0',Array[str](['end', '-3AY', 'fiscalperiod', '+1', 'periodtype', 'ANNUAL_ROLL', 'currency', '', 'freq', 'M']))
+printOutFactletResults(df)
+df2=convertToNumpy(df)
+dataset = pd.DataFrame({'Ticker':df2[:,0],'Date':df2[:,1],'Currency':df2[:,2],'FE_Item':df2[:,3],'FE_PER_REL':df2[:,4],'Date':df2[:,5],'FE_MEAN':df2[:,6],'FE_MEDIAN':df2[:,7],'FE_NUM_EST':df2[:,8],'FE_LOW':df2[:,9],'FE_HIGH':df2[:,10],'FE_STD_DEV':df2[:,10],'FE_UP':df2[:,12],'FE_DOWN':df2[:,13],'FE_UNCHANGED':df2[:,14],'FE_TOTAL':df2[:,15],'FE_MEPS_INFO':df2[:,16]})
+print(dataset)
+
+
+df = fsod.EstimatesOnDemand('NFLX-US', 'SUBSCRIBERS_NB', 'BrokerSnapshot', '0', 'fiscalperiod', '+1', 'periodtype', 'ANNUAL_ROLL', 'currency', '')
+printOutFactletResults(df)
+
+
+
+df = fsod.EstimatesOnDemand('NFLX-US','EPS','Consensus', '0' ,Array[str](['end', '-3AY']))
+printOutFactletResults(df)
+df2=convertToNumpy(df)
 
 
 # %%
@@ -136,6 +170,12 @@ df = fsod.executeFactlet(uFactlet)
 df.throwErrorIfAnyIsPresent()
 
 
+
+#%%
+
+# Dividends
+df = fsod.ExtractVectorFormula("PCMC", "PID(-1)");
+printOutFactletResults(df); 
 
 
 # %%
