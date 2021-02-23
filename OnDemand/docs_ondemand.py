@@ -85,14 +85,16 @@ print('Counter: ', counter)
 
 #search parameters:
 sd ='20191001' #start date
-ed ='20191031' #end date
+ed ='20201231' #end date
 payload = { 'report': 'search',
 
 #define the request type as a search
 'sd': sd,
 'ed': ed,
-'sources': 'EDG',
-'ids': 'aapl-US'
+'sources': 'SA',
+'ids': 'aapl-us',
+'sa_categories': 'SA_EARNINGS',
+'n' : '10'
 }
 
 

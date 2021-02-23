@@ -77,11 +77,11 @@ print(dataset)
 
 
 # S&P 500 universe
-df = fsod.ExtractDataSnapshot("","","6/30/2020",["UNIVERSE","FG_CONSTITUENTS(SP50,6/30/2020,CLOSE)"]) 
+df = fsod.ExtractDataSnapshot("","P_PRICE(6/30/2020)","6/30/2020",["UNIVERSE","FG_CONSTITUENTS(SP50,6/30/2020,CLOSE)"]) 
 printOutFactletResults(df)
 
 df2=convertToNumpy(df)
-dataset = pd.DataFrame({'Ticker':df2[:,0],'Date':df2[:,1],'Name':df2[:,2]})
+dataset = pd.DataFrame({'Ticker':df2[:,0],'Date':df2[:,1],'Name':df2[:,2],'Price':df2[:,]})
 print(dataset)
 
 
