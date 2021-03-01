@@ -197,3 +197,26 @@ printOutFactletResults(data)
 #AT3
 data = fsod.ExtractAlphaTestingSnapshot('', 'Y','CLIENT:ASIA EX JAPAN QUANT DEMO','CONSTITUENTS', 'ALL', '', '', '', '', '', '') 
 printOutFactletResults(data)
+
+
+
+# %%
+#%
+
+#JPM sample
+
+df=fsod.ExtractEconData("","FDS_ECON_DATA(\'AUPR0942296\',20151231,0,Q,STEP,AVERAGE,0)")
+df3=fsod.ExtractEconData("","FDS_ECON_DATA(\'AUPR0942295\',20151231,0,Q,STEP,AVERAGE,0)")
+
+df2=convertToNumpy(df)
+df4=convertToNumpy(df3)
+
+dataset = pd.DataFrame({'AUPR0942296':df2[:,0],'Date':df2[:,1],'value':df2[:,2],'AUPR0942295':df4[:,0],'Date2':df4[:,1],'value2':df4[:,2]})
+
+dataset['avg'] = dataset.loc[: , ['value', 'value2']].astype(float).mean(axis=1)
+
+
+print(dataset)
+
+
+# %%
