@@ -39,8 +39,25 @@ finally:
   browser.find_element_by_id('i0116').send_keys(Keys.CONTROL, 'v')
   browser.find_element_by_id('idSIButton9').click()
 
-# %%
+#%%
 
+try:
+  WebDriverWait(browser, 10).until(
+    EC.visibility_of_element_located((By.ID, 'lnkFilteringTop')))
+finally:
+  browser.find_element_by_id('lnkFilteringTop').click()
+
+
+browser.find_element_by_xpath("//*[text()='BAML_QNT']").click()
+browser.find_element_by_xpath("//*[text()='912211']").click()
+browser.find_element_by_id('MainContent_rbRegular').click()
+browser.find_element_by_id('MainContent_rbModifyExisting').click()
+
+
+
+
+
+#%%
 ######################################
 
 # Select account/ Machine SN / Untick the boxes before running this code
