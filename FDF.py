@@ -1,24 +1,27 @@
 #%%
 
+### Input parameters
 
 # Required items to be filtered
 required_items = ('FF_INVEST_FIX_INC', 'FF_INVEST_EQ', 'FF_SALES', 'FF_ASSETS_CURR', 'FF_LIABS_CURR', 'FF_ASSETS', 'FF_LIABS', 'FF_EQ_TOT', 'FF_DEBT', 'FF_NET_DEBT', 'FF_INT_EXP_DEBT', 'FF_CASH_ST', 'FF_EBITDA_OPER', 'FF_EBIT_OPER', 'FF_OPER_INC', 'FF_DIV_CF', 'FF_OPER_PS_NET_CF', 'FF_COM_SHS_OUT', 'FF_NET_INC', 'FF_EPS_DIL_BEF_UNUSUAL', 'FF_COM_SHS_OUT_EPS_DIL', 'FF_COM_SHS_OUT_EPS_BASIC', 'FF_COM_SHS_OUT', 'FF_MIN_INT_ACCUM', 'TEST', 'TEST2')
 
+# Leave empty if you want to search/input manually
+qnt = 'EMMI_QNT'
+SerialNumber = ''
 
+# Your e-mail and directory where your Chromedriver is saved
+# You can download the Chromedriver from https://chromedriver.chromium.org/downloads
+# You may check the version you need to download by going to your current chrome -> option -> help -> about Google Chrome
 
 email = 'mpark@factset.com'
 exec_chrome = 'C:\\Users\\mpark\\Git\\Notes\\FDS\\Temperature_check\\chromedriver.exe'
 
 
-qnt = 'EMMI_QNT'
-SerialNumber = ''
-
 
 #%%
 
-# Required libraries
+### Required libraries
 # Selenium, pyperclip, tkinter, tqdm
-
 
 # Import libraries
 from selenium import webdriver
@@ -29,7 +32,6 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import ElementNotInteractableException
-
 
 import pyperclip #login
 
@@ -57,7 +59,6 @@ finally:
   pyperclip.copy(email)
   browser.find_element_by_id('i0116').send_keys(Keys.CONTROL, 'v')
   browser.find_element_by_id('idSIButton9').click()
-
 
 # Go to Create/Modify page
 
@@ -92,7 +93,6 @@ try:
 finally:
   browser.find_element_by_id('MainContent_rbRegular').click()
   browser.find_element_by_id('MainContent_rbModifyExisting').click()
-
 
 
 # This code is to hide the main tkinter window
@@ -177,12 +177,7 @@ for i in selected_items_code:
   a = i+'CheckBox'
   selected_items_code_comp.append(a)
 
-# %%
 
-# Checking the list of checkbox buttons
-# selected_items_code_comp
-
-  
 # %%
 
 # Tick required items
@@ -191,7 +186,6 @@ for i in selected_items_code_comp:
   browser.find_element_by_id(i).click()
 
 # %%
-
 
 # Reference
 
