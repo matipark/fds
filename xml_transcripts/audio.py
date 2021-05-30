@@ -7,15 +7,18 @@ import numpy as np
 import matplotlib.pyplot as plt
 import time
 from tkinter import TclError
+import tkinter as tk
 
-%matplotlib tk
 
 # %%
 
-CHUNK = 1024 * 2             # samples per frame
+%matplotlib tk
+
+CHUNK = 1024 * 2            # samples per frame
 FORMAT = pyaudio.paInt16     # audio format (bytes per sample?)
 CHANNELS = 1                 # single channel for microphone
 RATE = 44100                 # samples per second
+
 
 
 # %%
