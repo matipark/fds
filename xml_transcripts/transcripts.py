@@ -24,6 +24,7 @@ connection_to_sql = pyodbc.connect('DSN={dsn_name}'.format(dsn_name = dsn))
 
 #%%
 
+
 start_time = time.time()
 
 # retriving all participants for the last 3 months
@@ -38,6 +39,7 @@ print("Process finished --- %s seconds ---" % (time.time() - start_time))
 df_1.head()
 
 #%%
+
 
 # excluding people working in the company & finding analysts
 analysts = df_1[df_1.person_comp_entity_id!=df_1.factset_entity_id].groupby(['factset_person_id','person_name','person_comp_name','participant_title'])[['event_id','factset_entity_id']].nunique()
@@ -60,6 +62,7 @@ event_parts.tail()
 
 #%%
 
+### parsing the text in xml transcripts
 
 # archive for transcripts in the year of 2020
 archive_path = 'C:\\Users\\mpark\\OneDrive - FactSet\\Documents\\Loader_app\\zips\\tr_history_2020_full_1535'
@@ -77,6 +80,8 @@ univ.head()
 
 # %%
 
+start_time = time.time()
+
 entity_ids = "'"+"','".join(str(x) for x in 
                             univ.factset_entity_id.dropna().unique().tolist()) + "'"
 
@@ -87,6 +92,10 @@ event = pd.read_sql(sql_query_3,connection_to_sql)
 
 #merge with the Universe table
 event = univ.merge(event,how='inner',on='factset_entity_id')
+
+print("Process finished --- %s seconds ---" % (time.time() - start_time))
+
+#%%
 
 #only include events when the company was part of the universe
 event[(event.event_datetime_utc>=event.startdate)&(event.event_datetime_utc<=event.enddate)]
@@ -188,7 +197,7 @@ print("Process finished --- %s seconds ---" % (time.time() - start_time))
 
 df = participants.merge(body,on=['id','document'],how='inner')
 df.sort_values(['document','section','order'],inplace=True)
-df[df.type!='operator'].set_index('id').head(30)
+df[df.type!='operator'].set_index('id').head(10)
 
 
 # %%

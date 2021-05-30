@@ -27,7 +27,7 @@ sql_path = 'C:\\Github_repo\\Notes\\FDS\\xml_transcripts\\'
 
 start_time = time.time()
 
-# loadsql is a cover function used to retrieve SQL queries from a directory
+# classify calls by type
 sql_query_1 = loadsql.get_sql_q(os.path.join(sql_path,'4.1.1 Call Types and Counts.sql'),show=0,connection=dsn)
 
 ct = pd.read_sql(sql_query_1,connection_to_sql, index_col ='actr_call_type')
@@ -38,30 +38,29 @@ print("Process finished --- %s seconds ---" % (time.time() - start_time))
 
 ct.head(15)
 
+#%%
+
+# start_time = time.time()
+
+# # Input a start and end date call event range.
+# start_date = '2020-01-01'
+# end_date = '2020-12-31'
+
+# # average sentiment by country 
+# sql_query_2 = loadsql.get_sql_q(os.path.join(sql_path,'4.1.2 Average Sentiment by Country.sql'),show=0,connection=dsn).format(start_date = start_date, end_date = end_date)
+
+# acc = pd.read_sql(sql_query_2,connection_to_sql, index_col ='actr_country_name')
+
+# print("Process finished --- %s seconds ---" % (time.time() - start_time))
+
+
+# # %%
+
+# acc.head(10)
 
 #%%
 
-start_time = time.time()
-
-# Input a start and end date call event range.
-start_date = '2020-01-01'
-end_date = '2020-12-31'
-
-# loadsql is a cover function used to retrieve SQL queries from a directory
-sql_query_2 = loadsql.get_sql_q(os.path.join(sql_path,'4.1.2 Average Sentiment by Country.sql'),show=0,connection=dsn).format(start_date = start_date, end_date = end_date)
-
-acc = pd.read_sql(sql_query_2,connection_to_sql, index_col ='actr_country_name')
-
-print("Process finished --- %s seconds ---" % (time.time() - start_time))
-
-
-# %%
-
-acc.head(10)
-
-#%%
-
-# list of topics
+# list of topics discussed in the calls
 
 sql_query_3 = loadsql.get_sql_q(os.path.join(sql_path,'4.1.3 Topic Map.sql'),show=0,connection=dsn)
 
@@ -71,14 +70,13 @@ tm.head(25)
 # %%
 
 start_time = time.time()
-
-#Input a valid ticker-country, an actr_call_type as well as a start and end date call event range. 
+ 
 ticker = 'FDS-US'
 call_type = 'Earnings Call'
 start_date = '2020-01-01'
 end_date = '2020-12-31'
 
-#loadsql is a cover function used to retrieve SQL queries from a directory
+# tagging events in the call
 sql_query_4 = loadsql.get_sql_q(os.path.join(sql_path,'4.1.4 Ticker Event Selection.sql'),show=0,connection=dsn).format(ticker=ticker,call_type=call_type, start_date = start_date, end_date = end_date)
 
 tcc = pd.read_sql(sql_query_4,connection_to_sql, index_col ='actr_call_time')
@@ -89,19 +87,20 @@ print("Process finished --- %s seconds ---" % (time.time() - start_time))
 
 # %%
 
+# pull the list of conversations with tag
 tcc[['ticker_region','actr_name','actr_affiliation','actr_section','actr_topic',
      'actr_topic_desc','actr_prob_pos','actr_prob_ntr','actr_prob_neg']].head(5)
 
 #%%
 
-topic_count = tcc.groupby(by=['actr_topic_desc', 'actr_topic']).agg({'actr_topic_count':'sum', 'actr_prob_pos':'mean', 'actr_prob_neg':'mean', 'actr_prob_ntr':'mean'}).sort_values(by='actr_topic_count',ascending=False)
+# topic_count = tcc.groupby(by=['actr_topic_desc', 'actr_topic']).agg({'actr_topic_count':'sum', 'actr_prob_pos':'mean', 'actr_prob_neg':'mean', 'actr_prob_ntr':'mean'}).sort_values(by='actr_topic_count',ascending=False)
 
-topic_count.head(10)
+# topic_count.head(10)
 
 
 # %%
 
-#Select two topics from the actr_topic hierarchical categories in the table above
+# Select two topics from the actr_topic hierarchical categories in the table above
 topic1 = 'ERN/REV' #Earnings
 topic2 ='COV' #COVID
 
