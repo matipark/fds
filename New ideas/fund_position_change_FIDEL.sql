@@ -5,7 +5,7 @@ declare @histdate date
 declare @daysback integer
 declare @daysahead integer
 set @hldrid = '002HJB-E'
-set @histdate = '2019-01-01'
+set @histdate = '2020-09-01'
 --as of date
 set @daysback = -730
 --number of days prior to the @histdate that the holdings would be considered valid
@@ -16,6 +16,7 @@ where price_date between dateadd(dd,@daysback,@histdate) and dateadd(dd,@daysahe
 
 -- 089DR7-E BlackRock
 -- 002HJB-E
+-- 08D3XB-E
 -- 002FYS-E Van
 -- 000KLZ-E Fidelity
 -- 05K28L-E State Street
