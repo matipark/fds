@@ -2,15 +2,17 @@
 
 import queries as q
 import pandas as pd
+import time 
 from openpyxl import load_workbook
+
 
 
 # %%
 
-username = 'PERPETUAL' #'yonhap_kr' #'PERPETUAL'
+username = 'prism_kr' #'PERPETUAL' #'yonhap_kr' #'PERPETUAL'
 start_date = 'now-30d'
-serial = 1215045 #1137568
-max_size = 5
+#serial = 1215045 #1137568
+max_size = 10
 apikey = 'apikey 6b9ea362-bcdf-4fcc-b0a0-d693a978a7bd' #'apikey a8b298e2-5fc6-4fb5-a6a7-cf22267ba9ab',
 
 
@@ -21,7 +23,9 @@ apikey = 'apikey 6b9ea362-bcdf-4fcc-b0a0-d693a978a7bd' #'apikey a8b298e2-5fc6-4f
 
 
 loader_df = q.loader_endpoint(apikey,username,start_date,max_size)
+time.sleep(2)
 ondemand_df = q.ondemand_endpoint(apikey,username,start_date,max_size)
+time.sleep(2)
 content_df = q.content_api_endpoint(apikey,username,start_date)
 
 
