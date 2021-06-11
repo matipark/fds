@@ -3,13 +3,16 @@
 import requests
 import pandas as pd
 import json
+import time 
+from datetime import date
+from tqdm import tqdm
 
-serial = 939536 #1215045 #1137568
-username = 'PERPETUAL' #'yonhap_kr' #'tradingview' #'PERPETUAL'
+today = date.today().strftime("%Y%m%d")
+
+username = 'mac_cs_au'
 max_size = 5
 start_date = 'now-30d'
-apikey = 'apikey 6b9ea362-bcdf-4fcc-b0a0-d693a978a7bd' #'apikey a8b298e2-5fc6-4fb5-a6a7-cf22267ba9ab',
-
+apikey = 'apikey 6b9ea362-bcdf-4fcc-b0a0-d693a978a7bd' 
 
 #%%
 
@@ -318,7 +321,7 @@ def ondemand_endpoint(apikey,username,start_date,max_size):
     if len(json_response) == 0:
         final_response = pd.DataFrame(["no data available for given credentials"], columns=['message'])
     else:
-        final_response = pd.json_normalize(json_response)
+        final_response = pd.json_normalize(json_response).drop(['_index','_type','_id','_version','_score','sort','_source.@type','_source.@fields.beRspHdrXFdsaBackendPath','_source.@fields.beHdrXLimaCreated','_source.@fields.beHdrXLimasigDsa1024','_source.@fields.beRspHdrServer','_source.@fields.userState','_source.@fields.feHost','_source.@fields.beHdrForwarded','_source.@fields.connAvailable','_source.@fields.reqThreadActive','_source.@fields.beRspHdrContentType','_source.@fields.beRspHdrXFdsaRequestKey','_source.@fields.hdrAcceptEncoding','_source.@fields.hdrAuthorization','_source.@fields.beHdrXLimaUserstate','_source.@fields.beHdrXLimaOriginalUsername','_source.@fields.resThreadPoolSize','_source.@fields.level','_source.@fields.beHdrXLimaUsername','_source.@fields.beRspHdrVia','_source.@fields.connLeased','_source.@fields.beHdrXLimaExpiration','_source.@fields.beHdrXLimaUsertype','_source.@fields.beHdrXLimaSerial','_source.@fields.connPending','_source.@fields.resThreadActive','_source.@fields.beHdrConnection','_source.@fields.beRspHdrConnection','_source.@fields.chainId','_source.@fields.beRspHdrXFdsaBackendHostPort','_source.@fields.beHdrUserAgent','_source.@fields.beHdrXFdsaRequestKey','_source.@fields.originalUser','_source.@fields.serverName','_source.@fields.rspHdrXDatadirectRequestKey','_source.@fields.hdrContentType','_source.@fields.hdrConnection','_source.@fields.beHdrXLimaOriginalSerial','_source.@fields.connMax','_source.@fields.beRspHdrContentEncoding','_source.@fields.beRspContentLength','_source.@fields.rspContentLength','_source.@fields.beHdrAcceptEncoding','_source.@fields.beRspTime','_source.@fields.contentLength','_source.@fields.beRspHdrContentLength','_source.@fields.hdrContentLength','_source.@fields.method','_source.@fields.authUser'], axis=1, errors='ignore')
 
     return final_response
 
@@ -427,16 +430,95 @@ def loader_endpoint(apikey,username,start_date,max_size):
     if len(json_response) == 0:
         final_response = pd.DataFrame(["no data available for given credentials"], columns=['message'])
     else:
-        final_response = pd.json_normalize(json_response)
+        final_response = pd.json_normalize(json_response).drop(['_index','_type','_id','_version','_score','sort','_source.@fields.chainId','_source.@fields.compressed','_source.@fields.keyCounter','_source.@fields.isOnDocker','_source.@fields.maxParallelLimit','_source.@fields.userType','_source.@fields.OracleSingleUser','_source.@fields.loaderUser','_source.@fields.timeStamp','_source.@fields.endTime','_source.@fields.type','_source.@fields.user','_source.@fields.dbAuthType','_source.@fields.userState','_source.@fields.hostname','_source.@fields.originalSerial','_source.@timestamp'], axis=1, errors='ignore')
 
     return final_response
 
 
+
 # len(final)
 # len(final.columns)
-# final.info()
+# final_response.info()
 
 #%%
+
+
+def generate_excel(apikey,username_list,start_date,max_size):
+
+    writer = pd.ExcelWriter('usage_output_{}.xlsx'.format(today), engine='xlsxwriter') #opening excel file
+
+    for username in tqdm(username_list):    
+
+        loader_df = loader_endpoint(apikey,username,start_date,max_size)
+        time.sleep(2)
+        ondemand_df = ondemand_endpoint(apikey,username,start_date,max_size)
+        time.sleep(2)
+        content_df = content_api_endpoint(apikey,username,start_date)
+
+        # LOADER
+        
+        df = pd.DataFrame(columns = ['Loader Usage'])
+
+        df.to_excel(writer, sheet_name=username, startrow=0, index=False)
+
+        column_settings = [{'header': column} for column in loader_df.columns]
+        (loader_max_row, loader_max_col) = loader_df.shape
+        worksheet = writer.sheets[username]
+
+        if (loader_max_row or loader_max_col) == 1:
+            worksheet.set_column(0, 1, 20)
+            worksheet.set_column(1, 2, 30) # Make the columns wider for clarity.
+        else:
+            worksheet.add_table(1, 0, loader_max_row, loader_max_col - 1, {'columns': column_settings})
+            worksheet.set_column(0, 1, 20)
+            worksheet.set_column(1, 2, 30) # Make the columns wider for clarity.
+
+        loader_df.to_excel(writer, sheet_name=username, startrow=2, header=False, index=False)
+
+
+        # OnDemand
+        ondemand_adj_row = loader_max_row + 4
+
+        df = pd.DataFrame(columns = ['OnDemand Usage'])
+
+        df.to_excel(writer, sheet_name=username, startrow= ondemand_adj_row, index=False)
+
+        column_settings = [{'header': column} for column in ondemand_df.columns]
+        (ondemand_max_row, ondemand_max_col) = ondemand_df.shape
+        worksheet = writer.sheets[username]
+
+        if (ondemand_max_row or ondemand_max_col) == 1:
+            pass
+        else:
+            worksheet.add_table(ondemand_adj_row + 1, 0, ondemand_max_row + ondemand_adj_row + 1, ondemand_max_col - 1, {'columns': column_settings})
+            #worksheet.set_column(0, ondemand_max_col - 1, 12)
+
+        ondemand_df.to_excel(writer, sheet_name=username, startrow=ondemand_adj_row + 2, header=False, index=False)
+
+
+
+        # Content APi
+        content_adj_row = loader_max_row + ondemand_max_row + 8
+
+        df = pd.DataFrame(columns = ['Content API Usage'])
+
+        df.to_excel(writer, sheet_name=username, startrow= content_adj_row, index=False)
+
+        column_settings = [{'header': column} for column in content_df.columns]
+        (content_max_row, content_max_col) = content_df.shape
+        worksheet = writer.sheets[username]
+
+        if (content_max_row or content_max_col) == 1:
+            pass
+        else:
+            worksheet.add_table(content_adj_row + 1, 0, content_max_row + content_adj_row + 1, content_max_col - 1, {'columns': column_settings})
+            #worksheet.set_column(0, content_max_col - 1, 12) # Make the columns wider for clarity.
+
+        content_df.to_excel(writer, sheet_name=username, startrow=content_adj_row + 2, header=False, index=False)
+
+    # Close the Pandas Excel writer and output the Excel file.
+    writer.save()
+
 
 
 #%%
