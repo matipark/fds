@@ -223,6 +223,8 @@ def content_api_endpoint(apikey,username,start_date):
 
 def ondemand_endpoint(apikey,username,start_date,max_size):
 
+    required_columns = ['_source.@fields.user','_source.@fields.serial','_source.@timestamp','_source.@source_host','_source.@fields.reqThreadPoolMaxSize','_source.@fields.rspHdrContentLength','_source.@fields.rspTime','_source.@fields.rspHdrContentType','_source.@fields.warnings','_source.@fields.hdrHost','_source.@fields.beRspStatusReason','_source.@fields.reqMax','_source.@fields.rspHdrDate','_source.@fields.beUrl','_source.@fields.beHdrXFdsaProxyOrigClientAddr','_source.@fields.beHdrXTlsProtocol','_source.@fields.rspHdrContentEncoding','_source.@fields.beRspCode','_source.@fields.beContentLength','_source.@fields.beMethod','_source.@fields.beHdrXForwardedFor','_source.@fields.rspStatusReason','_source.@fields.duration','_source.@fields.clientIp','_source.@fields.hdrXTlsProtocol','_source.@fields.hdrUserAgent','_source.@fields.beHttpVer','_source.@fields.rspCode','_source.@fields.beRspHdrXFdsaLabel','_source.@fields.beHdrHost','_source.@fields.url','_source.@fields.reqThreadPoolSize','_source.@fields.service','_source.@fields.resThreadPoolMaxSize','_source.@fields.rspHdrKeepAlive','_source.@fields.hdrXForwardedFor','_source.@fields.rspHdrConnection','_source.@fields.reqActive','_source.@fields.httpVer']
+
     headers = {
         'Authorization': apikey,
         'content-type': 'application/json',
@@ -321,7 +323,8 @@ def ondemand_endpoint(apikey,username,start_date,max_size):
     if len(json_response) == 0:
         final_response = pd.DataFrame(["no data available for given credentials"], columns=['message'])
     else:
-        final_response = pd.json_normalize(json_response).drop(['_index','_type','_id','_version','_score','sort','_source.@type','_source.@fields.beRspHdrXFdsaBackendPath','_source.@fields.beHdrXLimaCreated','_source.@fields.beHdrXLimasigDsa1024','_source.@fields.beRspHdrServer','_source.@fields.userState','_source.@fields.feHost','_source.@fields.beHdrForwarded','_source.@fields.connAvailable','_source.@fields.reqThreadActive','_source.@fields.beRspHdrContentType','_source.@fields.beRspHdrXFdsaRequestKey','_source.@fields.hdrAcceptEncoding','_source.@fields.hdrAuthorization','_source.@fields.beHdrXLimaUserstate','_source.@fields.beHdrXLimaOriginalUsername','_source.@fields.resThreadPoolSize','_source.@fields.level','_source.@fields.beHdrXLimaUsername','_source.@fields.beRspHdrVia','_source.@fields.connLeased','_source.@fields.beHdrXLimaExpiration','_source.@fields.beHdrXLimaUsertype','_source.@fields.beHdrXLimaSerial','_source.@fields.connPending','_source.@fields.resThreadActive','_source.@fields.beHdrConnection','_source.@fields.beRspHdrConnection','_source.@fields.chainId','_source.@fields.beRspHdrXFdsaBackendHostPort','_source.@fields.beHdrUserAgent','_source.@fields.beHdrXFdsaRequestKey','_source.@fields.originalUser','_source.@fields.serverName','_source.@fields.rspHdrXDatadirectRequestKey','_source.@fields.hdrContentType','_source.@fields.hdrConnection','_source.@fields.beHdrXLimaOriginalSerial','_source.@fields.connMax','_source.@fields.beRspHdrContentEncoding','_source.@fields.beRspContentLength','_source.@fields.rspContentLength','_source.@fields.beHdrAcceptEncoding','_source.@fields.beRspTime','_source.@fields.contentLength','_source.@fields.beRspHdrContentLength','_source.@fields.hdrContentLength','_source.@fields.method','_source.@fields.authUser'], axis=1, errors='ignore')
+        final_response_all = pd.json_normalize(json_response)
+        final_response = final_response_all.reindex(columns = required_columns)
 
     return final_response
 
@@ -336,6 +339,8 @@ def ondemand_endpoint(apikey,username,start_date,max_size):
 
 
 def loader_endpoint(apikey,username,start_date,max_size):
+
+    required_columns = ['_source.@fields.originalUser','_source.@fields.serial','_source.@fields.startTime','_source.@fields.totalLocalDiskSpace','_source.@fields.statusCode','_source.@fields.databaseVersion','_source.@fields.keyId','_source.@fields.characterSet','_source.@fields.statusDesc','_source.@fields.totalMemory','_source.@fields.os','_source.@fields.databaseType','_source.@fields.isDownloadOnly','_source.@fields.totalDatabaseSpace','_source.@fields.freeLocalDiskSpace','_source.@fields.atomicRebuild','_source.@fields.level','_source.@fields.freeDatabaseSpace','_source.@fields.remoteDirSet','_source.@fields.loaderVersion','_source.@fields.DSNName','_source.@source_host']
 
     headers = {
         'Authorization': apikey,
@@ -430,11 +435,10 @@ def loader_endpoint(apikey,username,start_date,max_size):
     if len(json_response) == 0:
         final_response = pd.DataFrame(["no data available for given credentials"], columns=['message'])
     else:
-        final_response = pd.json_normalize(json_response).drop(['_index','_type','_id','_version','_score','sort','_source.@fields.chainId','_source.@fields.compressed','_source.@fields.keyCounter','_source.@fields.isOnDocker','_source.@fields.maxParallelLimit','_source.@fields.userType','_source.@fields.OracleSingleUser','_source.@fields.loaderUser','_source.@fields.timeStamp','_source.@fields.endTime','_source.@fields.type','_source.@fields.user','_source.@fields.dbAuthType','_source.@fields.userState','_source.@fields.hostname','_source.@fields.originalSerial','_source.@timestamp'], axis=1, errors='ignore')
+        final_response_all = pd.json_normalize(json_response)
+        final_response = final_response_all.reindex(columns = required_columns)
 
     return final_response
-
-
 
 # len(final)
 # len(final.columns)
@@ -450,9 +454,9 @@ def generate_excel(apikey,username_list,start_date,max_size):
     for username in tqdm(username_list):    
 
         loader_df = loader_endpoint(apikey,username,start_date,max_size)
-        time.sleep(2)
+        time.sleep(3)
         ondemand_df = ondemand_endpoint(apikey,username,start_date,max_size)
-        time.sleep(2)
+        time.sleep(3)
         content_df = content_api_endpoint(apikey,username,start_date)
 
         # LOADER
@@ -488,7 +492,7 @@ def generate_excel(apikey,username_list,start_date,max_size):
         worksheet = writer.sheets[username]
 
         if (ondemand_max_row or ondemand_max_col) == 1:
-            pass
+            pass # pass if there's no data
         else:
             worksheet.add_table(ondemand_adj_row + 1, 0, ondemand_max_row + ondemand_adj_row + 1, ondemand_max_col - 1, {'columns': column_settings})
             #worksheet.set_column(0, ondemand_max_col - 1, 12)
@@ -518,8 +522,6 @@ def generate_excel(apikey,username_list,start_date,max_size):
 
     # Close the Pandas Excel writer and output the Excel file.
     writer.save()
-
-
 
 #%%
 # https://note.nkmk.me/en/python-pandas-len-shape-size/
