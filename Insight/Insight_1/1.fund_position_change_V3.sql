@@ -18,12 +18,12 @@ set @hldrid = '06HJ8Y-E'
 set @fundname = 'ff_fidelity'
 
 
---'002FYS-E' vanguard
---'002HJD-E' blackrock
---'06HJ8Y-E' fidelity
+--'002FYS-E' vanguard 
+--'002HJD-E' blackrock done
+--'06HJ8Y-E' fidelity done
 --'000WX2-E' state_st
---'00G7QL-E' UBS
---'0035K2-E' JPM
+--'00G7QL-E' UBS done
+--'0035K2-E' JPM done
 
 
 set @histdate = '2007-12-01' -- SET PARAMETER

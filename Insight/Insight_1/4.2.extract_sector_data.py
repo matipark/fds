@@ -36,58 +36,74 @@ print("Process finished --- %s seconds ---" % (time.time() - start_time))
 #df_1.head()
 #df_1.info()
 
-# only taking certain dates
-#df_1[df_1['as_of_date']>'2020-03-01'].head()
+# pull one sector only
+# df_1[df_1.sector.eq('Healthcare')] 
 
-df_1[df_1.sector.eq('Healthcare')]
+# fig, ax = plt.subplots(figsize=(15,7))
+# df_1[df_1.style_agg.isin(['Value', 'Growth'])].groupby(['as_of_date','sector']).sum()['net_chg'].unstack().plot(ax=ax, marker='o') # only plot value and growth from dataframe
 
-fig, ax = plt.subplots(figsize=(15,7))
-df_1[df_1.style_agg.isin(['Value', 'Growth'])].groupby(['as_of_date','sector']).sum()['net_chg'].unstack().plot(ax=ax, marker='o') # only plot value and growth from dataframe
-
-# lines = df_1[df_1.style_agg.isin(['Value', 'Growth'])].plot.line(y='net_chg', x='as_of_date')
 
 
 # %%
 
-style = 'Growth' #'Value'
+style_list = ['Value','Growth']
+sector_list = ['Finance','Healthcare','Technology','Energy']
 start_date = datetime.date(2008, 7, 1)
-end_date = datetime.date(2008, 11, 1)
+end_date = datetime.date(2008, 12, 1)
 interval = 1
 
-
+# Finance
+# Telecommunications
+# Healthcare
+# Utilities
+# Technology
+# Non-Energy Materials
+# Consumer Non-Cyclicals
+# Industrials
+# Consumer Services
+# Energy
+# Consumer Cyclicals
+# Business Services
 
 #%%
 
-fig, ax = plt.subplots(figsize=(15,7))
+# by Sector
 
-ax.set_title(manager, fontsize=18, fontweight='bold') # title of the plot
-ax.axhline(linewidth=7, color='r') # red color line on y=0
-ax.axvspan(datetime.date(2020, 2, 1), datetime.date(2020, 5, 1), facecolor ='gray', alpha = 0.5) # gray area for March/2020
-ax.set_xlim([start_date, end_date]) # adjust the x axis to fit the dates available
+def graph(style,sector_list):
 
-# df_1[df_1.style_agg.isin(['Value', 'Growth'])].groupby(['as_of_date','sector']).sum()['net_chg'].unstack().plot(ax=ax, marker='o') # only plot value and growth from dataframe
+    fig, ax = plt.subplots(figsize=(15,7))
 
-df_1[df_1.style_agg.eq(style)].groupby(['as_of_date','sector']).sum()['net_chg'].unstack().plot(ax=ax, marker='o') # only plot value and growth from dataframe
+    ax.set_title(manager + ' - ' + style, fontsize=18, fontweight='bold') # title of the plot
+    ax.axhline(linewidth=7, color='r') # red color line on y=0
+    ax.axvspan(datetime.date(2020, 2, 1), datetime.date(2020, 5, 1), facecolor ='gray', alpha = 0.5) # gray area for March/2020
+    ax.set_xlim([start_date, end_date]) # adjust the x axis to fit the dates available
+
+    #df_1[df_1.style_agg.eq('Value')].groupby(['as_of_date','sector']).sum()['net_chg'].unstack().plot(ax=ax, marker='o') # only plot value and growth from dataframe
+
+    df_1[df_1.style_agg.eq(style) & df_1.sector.isin(sector_list)].groupby(['as_of_date','sector']).sum()['net_chg'].unstack().plot(ax=ax, marker='o') # only plot value and growth from dataframe
 
 
-ax.set_xlabel('')
-ax.set_ylabel('net change', fontsize=12)
+    ax.set_xlabel('')
+    ax.set_ylabel('net change', fontsize=12)
 
-# set monthly locator
-ax.xaxis.set_major_locator(mdates.MonthLocator(interval=interval))
-# set formatter
-ax.xaxis.set_major_formatter(mdates.DateFormatter('%d-%m-%Y'))
-# set font and rotation for date tick labels
+    # set monthly locator
+    ax.xaxis.set_major_locator(mdates.MonthLocator(interval=interval))
+    # set formatter
+    ax.xaxis.set_major_formatter(mdates.DateFormatter('%d-%m-%Y'))
+    # set font and rotation for date tick labels
 
-plt.gcf().autofmt_xdate()
-plt.grid(which='major') # add background grid
-plt.legend(ncol = 4, loc ="upper right", title = 'Fund type') # place legend
-# plt.text(datetime.date(2019, 5, 1), 2, 'Positive Change', fontsize=14, color='blue', bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5)) # adding text box
-# plt.text(datetime.date(2019, 5, 1), -6, 'Negative Change', fontsize=14, color='red', bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
+    plt.gcf().autofmt_xdate()
+    plt.grid(which='major') # add background grid
+    plt.legend(ncol = 4, loc ="upper right", title = 'Sector') # place legend
+    # plt.text(datetime.date(2019, 5, 1), 2, 'Positive Change', fontsize=14, color='blue', bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5)) # adding text box
+    # plt.text(datetime.date(2019, 5, 1), -6, 'Negative Change', fontsize=14, color='red', bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
 
-plt.savefig('{}.png'.format(manager), dpi=100) # store image
-plt.show()
+    #plt.savefig('{}.png'.format(manager + '_' + style), dpi=100) # store image
+    plt.show()
 
+
+for style in style_list:
+    graph(style,sector_list)
 
 # %%
 
