@@ -19,7 +19,7 @@ connection_to_sql = pyodbc.connect('DSN={dsn_name}'.format(dsn_name = dsn))
 #%%
 
 # update manager name
-manager = 'fidelity'
+manager = 'JPM'
 
 
 start_time = time.time()
@@ -47,9 +47,14 @@ print("Process finished --- %s seconds ---" % (time.time() - start_time))
 # %%
 
 style_list = ['Value','Growth']
-sector_list = ['Finance','Healthcare','Technology','Energy']
-start_date = datetime.date(2008, 7, 1)
-end_date = datetime.date(2008, 12, 1)
+sector_list = ['Finance','Healthcare','Technology','Energy', 'Utilities', 'Telecommunications', 'Non-Energy Materials', 'Consumer Non-Cyclicals', 'Industrials', 'Consumer Services', 'Consumer Cyclicals', 'Business Services']
+
+#['Finance','Healthcare','Technology','Energy']
+
+
+
+start_date = datetime.date(2019, 6, 1)
+end_date = datetime.date(2020, 12, 1)
 interval = 1
 
 # Finance
@@ -74,7 +79,7 @@ def graph(style,sector_list):
     fig, ax = plt.subplots(figsize=(15,7))
 
     ax.set_title(manager + ' - ' + style, fontsize=18, fontweight='bold') # title of the plot
-    ax.axhline(linewidth=7, color='r') # red color line on y=0
+    ax.axhline(linewidth=3, color='r') # red color line on y=0
     ax.axvspan(datetime.date(2020, 2, 1), datetime.date(2020, 5, 1), facecolor ='gray', alpha = 0.5) # gray area for March/2020
     ax.set_xlim([start_date, end_date]) # adjust the x axis to fit the dates available
 
@@ -92,13 +97,14 @@ def graph(style,sector_list):
     ax.xaxis.set_major_formatter(mdates.DateFormatter('%d-%m-%Y'))
     # set font and rotation for date tick labels
 
+    plt.tight_layout()
     plt.gcf().autofmt_xdate()
     plt.grid(which='major') # add background grid
     plt.legend(ncol = 4, loc ="upper right", title = 'Sector') # place legend
     # plt.text(datetime.date(2019, 5, 1), 2, 'Positive Change', fontsize=14, color='blue', bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5)) # adding text box
     # plt.text(datetime.date(2019, 5, 1), -6, 'Negative Change', fontsize=14, color='red', bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
 
-    #plt.savefig('{}.png'.format(manager + '_' + style), dpi=100) # store image
+    plt.savefig('{}.png'.format(manager + '_' + style), dpi=100) # store image
     plt.show()
 
 

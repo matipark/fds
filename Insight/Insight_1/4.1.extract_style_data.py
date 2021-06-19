@@ -19,7 +19,7 @@ connection_to_sql = pyodbc.connect('DSN={dsn_name}'.format(dsn_name = dsn))
 #%%
 
 # update manager name
-manager = 'fidelity'
+manager = 'blackrock'
 
 
 start_time = time.time()
@@ -35,12 +35,66 @@ print("Process finished --- %s seconds ---" % (time.time() - start_time))
 
 
 start_date = datetime.date(2019, 1, 1)
-end_date = datetime.date(2021, 5, 1)
+end_date = datetime.date(2020, 12, 1)
 interval = 1
+position_pos = 20
+position_neg = 35
 
 
+# %%
+
+# shorter version
+
+fig, ax = plt.subplots(figsize=(15,7))
+
+ax.set_title(manager, fontsize=18, fontweight='bold') # title of the plot
+ax.axhline(linewidth=3, color='r') # red color line on y=0
+
+if start_date > datetime.date(2015, 1, 1):
+
+    ax.axvspan(datetime.date(2020, 2, 1), datetime.date(2020, 5, 1), facecolor ='gray', alpha = 0.5) # gray area for March/2020
+
+else:
+    
+    ax.axvspan(datetime.date(2008, 8, 1), datetime.date(2008, 11, 1), facecolor ='gray', alpha = 0.5) # gray area for Sep/2008
+
+
+ax.set_xlim([start_date, end_date]) # adjust the x axis to fit the dates available
+
+df_1[df_1.style_agg.isin(['Value', 'Growth'])].groupby(['as_of_date','style_agg']).sum()['net_chg'].unstack().plot(ax=ax, marker='o') # only plot value and growth from dataframe
+
+ax.set_xlabel('')
+ax.set_ylabel('net change', fontsize=12)
+
+# set monthly locator
+ax.xaxis.set_major_locator(mdates.MonthLocator(interval=interval))
+# set formatter
+ax.xaxis.set_major_formatter(mdates.DateFormatter('%d-%m-%Y'))
+# set font and rotation for date tick labels
+
+plt.tight_layout()
+plt.gcf().autofmt_xdate()
+plt.grid(which='major') # add background grid
+plt.legend(loc ="lower right", title = 'Fund type') # place legend
+
+if start_date > datetime.date(2015, 1, 1):
+    plt.text(datetime.date(2019, 5, 1), position_pos, 'Positive Change', fontsize=14, color='blue', bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5)) # adding text box
+    plt.text(datetime.date(2019, 5, 1), -position_neg, 'Negative Change', fontsize=14, color='red', bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
+
+else:
+    plt.text(datetime.date(2008, 5, 1), position_pos, 'Positive Change', fontsize=14, color='blue', bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5)) # adding text box
+    plt.text(datetime.date(2008, 5, 1), -position_neg, 'Negative Change', fontsize=14, color='red', bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
+
+
+plt.savefig('{}.png'.format(manager), dpi=100) # store image
+plt.show()
 
 #%%
+
+
+# output Excel
+
+
 
 #df_1.head()
 #df_1.info()
@@ -52,6 +106,10 @@ interval = 1
 
 # only taking certain dates
 df_2 = df_1[df_1.style_agg.isin(['Value', 'Growth']) & (end_date >= df_1['as_of_date']) & (df_1['as_of_date'] >= start_date)]
+
+df_2
+
+#%%
 
 
 def generate_excel(df_2):
@@ -80,38 +138,6 @@ def generate_excel(df_2):
 
 
 generate_excel(df_2)
-
-
-# %%
-
-# shorter version
-
-fig, ax = plt.subplots(figsize=(15,7))
-
-ax.set_title(manager, fontsize=18, fontweight='bold') # title of the plot
-ax.axhline(linewidth=3, color='r') # red color line on y=0
-ax.axvspan(datetime.date(2020, 2, 1), datetime.date(2020, 5, 1), facecolor ='gray', alpha = 0.5) # gray area for March/2020
-ax.set_xlim([start_date, end_date]) # adjust the x axis to fit the dates available
-
-df_1[df_1.style_agg.isin(['Value', 'Growth'])].groupby(['as_of_date','style_agg']).sum()['net_chg'].unstack().plot(ax=ax, marker='o') # only plot value and growth from dataframe
-
-ax.set_xlabel('')
-ax.set_ylabel('net change', fontsize=12)
-
-# set monthly locator
-ax.xaxis.set_major_locator(mdates.MonthLocator(interval=interval))
-# set formatter
-ax.xaxis.set_major_formatter(mdates.DateFormatter('%d-%m-%Y'))
-# set font and rotation for date tick labels
-
-plt.gcf().autofmt_xdate()
-plt.grid(which='major') # add background grid
-plt.legend(loc ="lower right", title = 'Fund type') # place legend
-plt.text(datetime.date(2019, 5, 1), 10, 'Positive Change', fontsize=14, color='blue', bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5)) # adding text box
-plt.text(datetime.date(2019, 5, 1), -10, 'Negative Change', fontsize=14, color='red', bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
-
-#plt.savefig('{}.png'.format(manager), dpi=100) # store image
-plt.show()
 
 
 #%%
@@ -146,6 +172,7 @@ ax.xaxis.set_major_locator(mdates.MonthLocator(interval=interval))
 ax.xaxis.set_major_formatter(mdates.DateFormatter('%d-%m-%Y'))
 # set font and rotation for date tick labels
 
+plt.tight_layout()
 plt.gcf().autofmt_xdate()
 plt.grid(which='major') # add background grid
 plt.legend(loc ="lower right", title = 'Fund type') # place legend
@@ -157,6 +184,10 @@ plt.show()
 
 
 # %%
+
+
+
+#%%
 
 # REFERENCE
 
