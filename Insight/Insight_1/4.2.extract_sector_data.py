@@ -49,12 +49,21 @@ print("Process finished --- %s seconds ---" % (time.time() - start_time))
 style_list = ['Value','Growth']
 sector_list = ['Finance','Healthcare','Technology','Energy', 'Utilities', 'Telecommunications', 'Non-Energy Materials', 'Consumer Non-Cyclicals', 'Industrials', 'Consumer Services', 'Consumer Cyclicals', 'Business Services']
 
+
+#['Finance','Healthcare','Technology','Telecommunications','Consumer Cyclicals','Utilities']
+
+
+
+
 #['Finance','Healthcare','Technology','Energy']
 
 
+start_date = datetime.date(2019, 5, 1)
+end_date = datetime.date(2021, 4, 1)
 
-start_date = datetime.date(2019, 6, 1)
-end_date = datetime.date(2020, 12, 1)
+# start_date = datetime.date(2008, 5, 1)
+# end_date = datetime.date(2010, 4, 1)
+
 interval = 1
 
 # Finance
@@ -80,7 +89,17 @@ def graph(style,sector_list):
 
     ax.set_title(manager + ' - ' + style, fontsize=18, fontweight='bold') # title of the plot
     ax.axhline(linewidth=3, color='r') # red color line on y=0
-    ax.axvspan(datetime.date(2020, 2, 1), datetime.date(2020, 5, 1), facecolor ='gray', alpha = 0.5) # gray area for March/2020
+
+    if start_date > datetime.date(2015, 1, 1):
+
+        ax.axvspan(datetime.date(2020, 2, 1), datetime.date(2020, 5, 1), facecolor ='gray', alpha = 0.5) # gray area for March/2020
+
+    else:
+        
+        ax.axvspan(datetime.date(2008, 10, 1), datetime.date(2009, 1, 1), facecolor ='gray', alpha = 0.5) # gray area for Sep/2008
+
+
+
     ax.set_xlim([start_date, end_date]) # adjust the x axis to fit the dates available
 
     #df_1[df_1.style_agg.eq('Value')].groupby(['as_of_date','sector']).sum()['net_chg'].unstack().plot(ax=ax, marker='o') # only plot value and growth from dataframe
@@ -112,6 +131,8 @@ for style in style_list:
     graph(style,sector_list)
 
 # %%
+
+#https://stackoverflow.com/questions/47341018/plotting-pandas-dataframe-subplots-with-different-linestyles
 
 # REFERENCE
 

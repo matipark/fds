@@ -10,9 +10,12 @@ from tqdm import tqdm
 today = date.today().strftime("%Y%m%d")
 
 username = 'mac_cs_au'
+username_list = ['prism_kr', 'perpetual', 'yonhap_kr','mac_cs_au','Doom_KR']
+
 max_size = 5
 start_date = 'now-30d'
 apikey = 'apikey 6b9ea362-bcdf-4fcc-b0a0-d693a978a7bd' 
+
 
 #%%
 
@@ -330,10 +333,6 @@ def ondemand_endpoint(apikey,username,start_date,max_size):
 
 # final_response.info()
 
-#%%
-
-#ondemand_endpoint(apikey,username,start_date)
-
 
 #%%
 
@@ -446,6 +445,12 @@ def loader_endpoint(apikey,username,start_date,max_size):
 
 #%%
 
+# pd.options.display.max_columns = None
+# pd.options.display.max_rows = None
+
+
+#%%
+
 
 def generate_excel(apikey,username_list,start_date,max_size):
 
@@ -459,10 +464,9 @@ def generate_excel(apikey,username_list,start_date,max_size):
         time.sleep(3)
         content_df = content_api_endpoint(apikey,username,start_date)
 
-        # LOADER
-        
-        df = pd.DataFrame(columns = ['Loader Usage'])
 
+        # LOADER
+        df = pd.DataFrame(columns = ['Loader Usage'])
         df.to_excel(writer, sheet_name=username, startrow=0, index=False)
 
         column_settings = [{'header': column} for column in loader_df.columns]
@@ -484,7 +488,6 @@ def generate_excel(apikey,username_list,start_date,max_size):
         ondemand_adj_row = loader_max_row + 4
 
         df = pd.DataFrame(columns = ['OnDemand Usage'])
-
         df.to_excel(writer, sheet_name=username, startrow= ondemand_adj_row, index=False)
 
         column_settings = [{'header': column} for column in ondemand_df.columns]
@@ -495,10 +498,9 @@ def generate_excel(apikey,username_list,start_date,max_size):
             pass # pass if there's no data
         else:
             worksheet.add_table(ondemand_adj_row + 1, 0, ondemand_max_row + ondemand_adj_row + 1, ondemand_max_col - 1, {'columns': column_settings})
-            #worksheet.set_column(0, ondemand_max_col - 1, 12)
+
 
         ondemand_df.to_excel(writer, sheet_name=username, startrow=ondemand_adj_row + 2, header=False, index=False)
-
 
 
         # Content APi
@@ -516,7 +518,7 @@ def generate_excel(apikey,username_list,start_date,max_size):
             pass
         else:
             worksheet.add_table(content_adj_row + 1, 0, content_max_row + content_adj_row + 1, content_max_col - 1, {'columns': column_settings})
-            #worksheet.set_column(0, content_max_col - 1, 12) # Make the columns wider for clarity.
+
 
         content_df.to_excel(writer, sheet_name=username, startrow=content_adj_row + 2, header=False, index=False)
 
@@ -524,5 +526,7 @@ def generate_excel(apikey,username_list,start_date,max_size):
     writer.save()
 
 #%%
+
+# Reference
 # https://note.nkmk.me/en/python-pandas-len-shape-size/
 # https://stackoverflow.com/questions/49188960/how-to-show-all-of-columns-name-on-pandas-dataframe

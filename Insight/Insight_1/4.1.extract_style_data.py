@@ -19,7 +19,7 @@ connection_to_sql = pyodbc.connect('DSN={dsn_name}'.format(dsn_name = dsn))
 #%%
 
 # update manager name
-manager = 'blackrock'
+manager = 'fidelity'
 
 
 start_time = time.time()
@@ -33,12 +33,14 @@ print("Process finished --- %s seconds ---" % (time.time() - start_time))
 
 #%%
 
+start_date = datetime.date(2019, 5, 1)
+end_date = datetime.date(2021, 4, 1)
 
-start_date = datetime.date(2019, 1, 1)
-end_date = datetime.date(2020, 12, 1)
+# start_date = datetime.date(2008, 5, 1)
+# end_date = datetime.date(2010, 4, 1)
 interval = 1
-position_pos = 20
-position_neg = 35
+position_pos = 40
+position_neg = 40
 
 
 # %%
@@ -47,7 +49,7 @@ position_neg = 35
 
 fig, ax = plt.subplots(figsize=(15,7))
 
-ax.set_title(manager, fontsize=18, fontweight='bold') # title of the plot
+ax.set_title('Manager A', fontsize=18, fontweight='bold') # title of the plot
 ax.axhline(linewidth=3, color='r') # red color line on y=0
 
 if start_date > datetime.date(2015, 1, 1):
@@ -56,7 +58,7 @@ if start_date > datetime.date(2015, 1, 1):
 
 else:
     
-    ax.axvspan(datetime.date(2008, 8, 1), datetime.date(2008, 11, 1), facecolor ='gray', alpha = 0.5) # gray area for Sep/2008
+    ax.axvspan(datetime.date(2008, 10, 1), datetime.date(2009, 1, 1), facecolor ='gray', alpha = 0.5) # gray area for Sep/2008
 
 
 ax.set_xlim([start_date, end_date]) # adjust the x axis to fit the dates available
@@ -78,12 +80,12 @@ plt.grid(which='major') # add background grid
 plt.legend(loc ="lower right", title = 'Fund type') # place legend
 
 if start_date > datetime.date(2015, 1, 1):
-    plt.text(datetime.date(2019, 5, 1), position_pos, 'Positive Change', fontsize=14, color='blue', bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5)) # adding text box
-    plt.text(datetime.date(2019, 5, 1), -position_neg, 'Negative Change', fontsize=14, color='red', bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
+    plt.text(datetime.date(2019, 7, 1), position_pos, 'Positive Change', fontsize=14, color='blue', bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5)) # adding text box
+    plt.text(datetime.date(2019, 7, 1), -position_neg, 'Negative Change', fontsize=14, color='red', bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
 
 else:
-    plt.text(datetime.date(2008, 5, 1), position_pos, 'Positive Change', fontsize=14, color='blue', bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5)) # adding text box
-    plt.text(datetime.date(2008, 5, 1), -position_neg, 'Negative Change', fontsize=14, color='red', bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
+    plt.text(datetime.date(2008, 7, 1), position_pos, 'Positive Change', fontsize=14, color='blue', bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5)) # adding text box
+    plt.text(datetime.date(2008, 7, 1), -position_neg, 'Negative Change', fontsize=14, color='red', bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
 
 
 plt.savefig('{}.png'.format(manager), dpi=100) # store image
@@ -91,9 +93,7 @@ plt.show()
 
 #%%
 
-
-# output Excel
-
+# generate table
 
 
 #df_1.head()
@@ -111,6 +111,7 @@ df_2
 
 #%%
 
+# output Excel
 
 def generate_excel(df_2):
 
@@ -128,8 +129,7 @@ def generate_excel(df_2):
         pass
     else:
         worksheet.add_table(1, 0, max_row, max_col - 1, {'columns': column_settings})
-        worksheet.set_column(0, 1, 20)
-        worksheet.set_column(1, 2, 30) # Make the columns wider for clarity.
+        worksheet.set_column(0, 1, 20) # Make the columns wider for clarity.
 
     df_2.to_excel(writer, sheet_name=manager, startrow=2, header=False, index=False)
 
