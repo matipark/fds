@@ -21,6 +21,11 @@ connection_to_sql = pyodbc.connect('DSN={dsn_name}'.format(dsn_name = dsn))
 # update manager name
 manager = 'fidelity'
 
+if manager == 'JPM':
+    manager_hidden = 'Manager C'
+else:
+    manager_hidden = 'Manager A'
+
 
 start_time = time.time()
 
@@ -49,7 +54,7 @@ position_neg = 40
 
 fig, ax = plt.subplots(figsize=(15,7))
 
-ax.set_title('Manager A', fontsize=18, fontweight='bold') # title of the plot
+ax.set_title(manager_hidden, fontsize=18, fontweight='bold') # title of the plot
 ax.axhline(linewidth=3, color='r') # red color line on y=0
 
 if start_date > datetime.date(2015, 1, 1):
