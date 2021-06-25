@@ -21,8 +21,6 @@ connection_to_sql = pyodbc.connect('DSN={dsn_name}'.format(dsn_name = dsn))
 # update manager name
 manager = 'JPM'
 
-
-
 if manager == 'JPM':
     manager_hidden = 'Manager C'
 else:
@@ -61,6 +59,8 @@ end_date = datetime.date(2010, 4, 1)
 
 interval = 1
 
+#%%
+
 # Finance
 # Telecommunications
 # Healthcare
@@ -74,8 +74,6 @@ interval = 1
 # Consumer Cyclicals
 # Business Services
 
-
-# %%
 
 style_list = ['Value','Growth']
 sector_list = ['Technology','Energy', 'Utilities', 'Consumer Non-Cyclicals', 'Business Services']
@@ -150,6 +148,48 @@ def graph(style,sector_list):
 
 for style in style_list:
     graph(style,sector_list)
+
+
+
+
+
+
+#%%
+
+
+df_1[df_1.style_agg.eq(style) & df_1.sector.isin(sector_list)].groupby(['as_of_date','sector']).sum()['net_chg']
+
+
+
+
+color = ['limegreen', '#bc15b0', 'indigo']
+linestyle = ["-","--","-."]
+
+fig, ax = plt.subplots(3,2,squeeze=False,figsize = (8,5))
+for x in rows:
+    for i,dic in enumerate(dics):
+        dic[x].plot(ax=ax[x,i], style=linestyle, color=color, legend=False)
+        
+
+
+
+for i in sector_list:
+    for x in style_list:
+        df_1['style_agg']
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
