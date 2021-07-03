@@ -143,7 +143,7 @@ def graph(style,sector_list):
     # plt.text(datetime.date(2019, 5, 1), 2, 'Positive Change', fontsize=14, color='blue', bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5)) # adding text box
     # plt.text(datetime.date(2019, 5, 1), -6, 'Negative Change', fontsize=14, color='red', bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
 
-    plt.savefig('{}.png'.format(manager + '_' + style), dpi=100) # store image
+    #plt.savefig('{}.png'.format(manager + '_' + style), dpi=100) # store image
     plt.show()
 
 for style in style_list:
