@@ -15,7 +15,6 @@ import loadsql #functions to load sql queries
 dsn = 'FDSServer'
 connection_to_sql = pyodbc.connect('DSN={dsn_name}'.format(dsn_name = dsn))
 
-
 #%%
 
 # update manager name
@@ -25,7 +24,6 @@ if manager == 'JPM':
     manager_hidden = 'Manager C'
 else:
     manager_hidden = 'Manager A'
-
 
 start_time = time.time()
 
@@ -44,7 +42,7 @@ end_date = datetime.date(2021, 4, 1)
 # start_date = datetime.date(2008, 5, 1)
 # end_date = datetime.date(2010, 4, 1)
 interval = 1
-position_pos = 40
+position_pos = 40 #position of the sign
 position_neg = 40
 
 
@@ -64,7 +62,6 @@ if start_date > datetime.date(2015, 1, 1):
 else:
     
     ax.axvspan(datetime.date(2008, 10, 1), datetime.date(2009, 1, 1), facecolor ='gray', alpha = 0.5) # gray area for Sep/2008
-
 
 ax.set_xlim([start_date, end_date]) # adjust the x axis to fit the dates available
 
@@ -93,26 +90,22 @@ else:
     plt.text(datetime.date(2008, 7, 1), -position_neg, 'Negative Change', fontsize=14, color='red', bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
 
 
-plt.savefig('{}.png'.format(manager), dpi=100) # store image
+#plt.savefig('{}.png'.format(manager), dpi=100) # store image
 plt.show()
 
 #%%
 
 # generate table
 
-
 #df_1.head()
 #df_1.info()
-
 
 # only taking Value and Growth types
 #df_1[df_1.style_agg.isin(['Value', 'Growth'])].head(30)
 
-
 # only taking certain dates
 df_2 = df_1[df_1.style_agg.isin(['Value', 'Growth']) & (end_date >= df_1['as_of_date']) & (df_1['as_of_date'] >= start_date)]
 
-df_2
 
 #%%
 
