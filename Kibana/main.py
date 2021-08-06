@@ -30,6 +30,7 @@ q.generate_excel(apikey,username_list,start_date,max_size)
 ### FDS Reference
 
 # https://pages.github.factset.com/clp/docs/api/native-searching-cloud/
+# https://pages.github.factset.com/clp/docs/
 # http://is.factset.com/rpd/summary.aspx?messageId=58289251
 # https://pages.github.factset.com/clp/factset-io-addon-clp/
 # https://github.factset.com/clp/python-logging-clp
