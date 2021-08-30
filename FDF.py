@@ -3,10 +3,10 @@
 ### Input parameters
 
 # Required items to be filtered
-required_items = ('FF_INVEST_FIX_INC', 'FF_INVEST_EQ', 'FF_SALES', 'FF_ASSETS_CURR', 'FF_LIABS_CURR', 'FF_ASSETS', 'FF_LIABS', 'FF_EQ_TOT', 'FF_DEBT', 'FF_NET_DEBT', 'FF_INT_EXP_DEBT', 'FF_CASH_ST', 'FF_EBITDA_OPER', 'FF_EBIT_OPER', 'FF_OPER_INC', 'FF_DIV_CF', 'FF_OPER_PS_NET_CF', 'FF_COM_SHS_OUT', 'FF_NET_INC', 'FF_EPS_DIL_BEF_UNUSUAL', 'FF_COM_SHS_OUT_EPS_DIL', 'FF_COM_SHS_OUT_EPS_BASIC', 'FF_COM_SHS_OUT', 'FF_MIN_INT_ACCUM', 'TEST', 'TEST2')
+required_items = ('FF_ENTRPR_VAL_SALES','FF_EBIT_OPER_INT_COVG','FF_WKCAP_PCT','FF_RECEIV_TURN','FF_RECEIV_TURN_DAYS','FF_PAY_TURN_DAYS')
 
 # Leave empty if you want to search/input manually
-qnt = 'EMMI_QNT'
+qnt = 'HANKYUNG_QNT'
 SerialNumber = ''
 
 # Your e-mail and directory where your Chromedriver is saved
@@ -14,7 +14,7 @@ SerialNumber = ''
 # You may check the version you need to download by going to your current chrome -> option -> help -> about Google Chrome
 
 email = 'mpark@factset.com'
-exec_chrome = 'C:\\Users\\mpark\\Git\\Notes\\FDS\\Temperature_check\\chromedriver.exe'
+exec_chrome = 'C:\\Github_repo\\Notes\\FDS\\Temperature_check\\chromedriver.exe'
 
 
 
@@ -112,7 +112,7 @@ finally:
 ### Manually untick the bundle box
 
 try:
-  WebDriverWait(browser, 300).until(
+  WebDriverWait(browser, 10).until(
     EC.visibility_of_element_located((By.ID, 'MainContent_treeBundlesNewt1')))
 finally:
   messagebox.showinfo(

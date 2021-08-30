@@ -17,8 +17,15 @@ connection_to_sql = pyodbc.connect('DSN={dsn_name}'.format(dsn_name = dsn))
 
 #%%
 
+# --'002FYS-E' vanguard 
+# --'002HJD-E' blackrock done
+# --'06HJ8Y-E' fidelity done
+# --'000WX2-E' state_st
+# --'00G7QL-E' UBS done
+# --'0035K2-E' JPM done
+
 # update manager name
-manager = 'fidelity'
+manager = 'UBS'
 
 if manager == 'JPM':
     manager_hidden = 'Manager C'
