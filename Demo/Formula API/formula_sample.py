@@ -24,7 +24,8 @@ requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 # Enter your credentials for 'Username' and 'API Key' below.
 # To generate an API key, visit (https://developer.factset.com/authentication) for more details on Authentication.
 
-authorization = ('FDS_DEMO_FE-410734','06LE9ERlxk7vS5AIwHFmThwJo0oX6ojGUUDVthEg')
+# authorization = ('FDS_DEMO_FE-410734','06LE9ERlxk7vS5AIwHFmThwJo0oX6ojGUUDVthEg')
+authorization = ('HLIM-FDS','wiZurpIs5Owo4nvK3wIWczv7nAou4FC1JkzxST7b')
 
 # Set Required Headers
 headers = {'Accept': 'application/json','Content-Type': 'application/json'}
@@ -41,7 +42,7 @@ batch_request ={
       "batch": "Y",
       "universe": "URANKX((F_COUNTRY=\"UNITED STATES\" AND ISON_INACTIVE=0 AND ISON_SECONDARY=0 AND P_SEC_TYPE(CODE,GEN)=0)=1,FG_MKT_VALUE)<=250S",
       "formulas": [
-        "P_PRICE(0,-1AY,D)",
+        "P_PRICE(0,-1AD,D)",
         "PROPER_NAME"
       ],
       "flatten": "Y"
@@ -84,6 +85,11 @@ batch_id_request ={
   }
 }
 
+
+#%%
+
+
+
 # 4.2 Make the `/batch-status` Request
 
 batch_id_request_json = json.dumps(batch_id_request)
@@ -94,6 +100,9 @@ print('HTTP Status: {}'.format(batch_status_response.status_code))
 batch_status_data = json.loads(batch_status_response.text)
 batch_status_data_formatted = json.dumps(batch_status_data, indent=2)
 print(batch_status_data_formatted)
+
+
+#%%
 
 # 5. Pick up the Results of the Batch Request
 
@@ -114,3 +123,4 @@ batch_result_data_formatted = json.dumps(batch_result_data, indent=2)
 print(batch_result_data_formatted)
 
                 
+# %%
