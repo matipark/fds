@@ -11,7 +11,9 @@ from pandas.io.json import json_normalize
 
 #%%
 
-authorization = ('FDS_DEMO_FE-410734','06LE9ERlxk7vS5AIwHFmThwJo0oX6ojGUUDVthEg')
+#authorization = ('FDS_DEMO_FE-410734','06LE9ERlxk7vS5AIwHFmThwJo0oX6ojGUUDVthEg')
+# Office key
+authorization = ('FDS_DEMO_FE-410734','GItuvdYsPrZl84GJQmjVzl0Krn9SYSjw3jnscEYy')
 
 ###
 entity_match_endpoint = 'https://api.factset.com/content/factset-concordance/v1/entity-match'
