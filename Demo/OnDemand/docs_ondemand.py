@@ -17,7 +17,7 @@ serial = '410734' #Insert Serial Number tied to machine account provided by your
 output_dir = r'C:\Users\mpark\OneDrive - FactSet\Desktop\Test\_'
 
 #read key.txt
-keyfile = r'C:\Users\mpark\OneDrive - FactSet\Desktop\FDSLoader-Windows-2.11.1.0\key2.txt'
+keyfile = r'C:\Users\mpark\OneDrive - FactSet\Documents\Loader_app\key2.txt'
 d = {}
 with open(keyfile) as f:
     for line in f:
@@ -67,7 +67,7 @@ r = requests.get(Service_url,headers=header)
 
 #update counter and write to key.txt
 counter += 1
-with open(r'C:\Users\mpark\OneDrive - FactSet\Desktop\FDSLoader-Windows-2.11.1.0\key2.txt','w') as f:
+with open(r'C:\Users\mpark\OneDrive - FactSet\Documents\Loader_app\key.txt2','w') as f:
     f.write('KeyId: '+ keyId + '\n')
     f.write('Key: '+ key + '\n')
     f.write('Counter: '+ str(counter))
@@ -84,16 +84,16 @@ print('Counter: ', counter)
 
 
 #search parameters:
-sd ='20191001' #start date
+sd ='20101001' #start date
 ed ='20201231' #end date
 payload = { 'report': 'search',
 
 #define the request type as a search
 'sd': sd,
 'ed': ed,
-'sources': 'SA',
+'sources': 'EDG',
 'ids': 'aapl-us',
-'sa_categories': 'SA_EARNINGS',
+#'sa_categories': 'SA_EARNINGS',
 'n' : '10'
 }
 
