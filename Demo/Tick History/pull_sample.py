@@ -3,6 +3,10 @@
 
 import requests
 import time
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
 
 #%%
 
@@ -16,8 +20,8 @@ iso_code = 'CBO'
 start_date = "2022-02-08"
 end_date = "2022-02-08"
 
-authorization = ('FDS_DEMO_FE-410734','06LE9ERlxk7vS5AIwHFmThwJo0oX6ojGUUDVthEg')
 output_dir = r'C:\Users\mpark\OneDrive - FactSet\Desktop\Sample\_'
+authorization = (os.getenv('usernamee'),os.getenv('passs'))
 
 
 #%%
