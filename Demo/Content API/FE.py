@@ -12,7 +12,9 @@ from pandas.io.json import json_normalize
 
 # 2. Create a connection object
 
-authorization = ('FDS_DEMO_FE-410734','06LE9ERlxk7vS5AIwHFmThwJo0oX6ojGUUDVthEg')
+#authorization = ('FDS_DEMO_FE-410734','06LE9ERlxk7vS5AIwHFmThwJo0oX6ojGUUDVthEg')
+#Office API key
+authorization = ('FDS_DEMO_FE-410734','GItuvdYsPrZl84GJQmjVzl0Krn9SYSjw3jnscEYy')
 
 # 3.0 FactSet Estimates API Endpoint Details
 

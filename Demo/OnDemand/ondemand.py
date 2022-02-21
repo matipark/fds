@@ -37,6 +37,17 @@ df = fsod.ExtractFormulaHistory("004561,005367,006670,008118,037537,038641,04052
 
 printOutFactletResults(df)
 
+#%%
+
+
+df = fsod.ExtractFormulaHistory("BHP-AU", "FREF_CAP_STRUCT_COUNTERPART", "0")
+
+df = fsod.ExtractDataSnapshot("BHP-AU", "FREF_MARKET_VALUE_COMPANY", "-100AY")
+
+df = fsod.ExtractFormulaHistory("BHP-AU", "FREF_MARKET_VALUE_COMPANY(0,,,,,1,,\'LEGACY\')", "0")
+
+printOutFactletResults(df)
+
 
 #%%
 
