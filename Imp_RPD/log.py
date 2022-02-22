@@ -6,6 +6,9 @@ from time import sleep
 from selenium import webdriver
 from selenium.webdriver import DesiredCapabilities
 
+#%%
+
+
 # make chrome log requests
 capabilities = DesiredCapabilities.CHROME
 capabilities["loggingPrefs"] = {"performance": "ALL"}  # newer: goog:loggingPrefs
@@ -16,6 +19,8 @@ driver = webdriver.Chrome(
 # fetch a site that does xhr requests
 driver.get("https://rpd.factset.io/create")
 sleep(5)  # wait for the requests to take place
+
+#%%
 
 # extract requests from logs
 logs_raw = driver.get_log("performance")
