@@ -25,9 +25,9 @@ for index, row in df_keep.iterrows():
     machine_sn = row[3]
     notes = row[5]
     print (username, imp_package, machine_sn, notes)
-    time.sleep (13)
+    time.sleep (5)
     rpd_url = p.file_rpd(username, imp_package, machine_sn, notes)
-    time.sleep (13)
+    time.sleep (5)
 
 
 # %%
