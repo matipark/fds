@@ -65,6 +65,10 @@ def file_rpd(username, imp_package, machine_sn, notes):
     return rpd_link
 
 
+def make_hyperlink(value):
+    url = "http://is.factset.com/rpd/Summary.aspx?messageId={}"
+    return '=HYPERLINK("%s", "%s")' % (url.format(value), value)
+
 # %%
 
 # Adding a client
