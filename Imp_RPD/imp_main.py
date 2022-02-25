@@ -65,9 +65,9 @@ def file_rpd(username, imp_package, machine_sn, notes):
 
 
 # function to make hyperlink
-# def make_hyperlink(value):
-#     url = "http://is.factset.com/rpd/Summary.aspx?messageId={}"
-#     return '=HYPERLINK("%s", "%s")' % (url.format(value), value)
+def make_hyperlink(value):
+    url = "http://is.factset.com/rpd/Summary.aspx?messageId={}"
+    return '=HYPERLINK("%s", "%s")' % (url.format(value), value)
 
 
 

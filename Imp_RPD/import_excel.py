@@ -3,7 +3,7 @@
 
 import pandas as pd
 import imp_main as p
-#import time
+
 
 #%%
 
@@ -16,6 +16,7 @@ df_keep.reset_index(drop=True, inplace=True)
 max = len(df.dropna(subset=['Imp_rpd']))+1
 rpd_list = pd.DataFrame(columns = ['rpd_url', 'rpd_number'], index = [0, 1])
 
+df_keep
 
 #%%
 
@@ -30,23 +31,17 @@ for index, row in df_keep.iterrows():
     rpd_list['rpd_url'].loc[index] = rpd_url
     rpd_number = rpd_url[-8:]
     rpd_list['rpd_number'].loc[index] = rpd_number
-    #time.sleep (3)
-
-# rpd_url = "http://is.factset.com/rpd/Summary.aspx?messageId="
 
 
 # test
-# rpd_list = pd.DataFrame([["http://is.factset.com/rpd/Summary.aspx?messageId=123455", 123455],["http://is.factset.com/rpd/Summary.aspx?messageId=2432123",2432123],["http://is.factset.com/rpd/Summary.aspx?messageId=254523",254523]], columns = ['rpd_url','rpd_number'])
+# rpd_list = pd.DataFrame([["http://is.factset.com/rpd/Summary.aspx?messageId=12300455", 12300455],["http://is.factset.com/rpd/Summary.aspx?messageId=24321123",24321123],["http://is.factset.com/rpd/Summary.aspx?messageId=25452003",25452003]], columns = ['rpd_url','rpd_number'])
 
-# using hyperlink function
-# rpd_list['rpd_url'] = rpd_list['rpd_url'].apply(lambda x: p.make_hyperlink(x))
-
-
-rpd_list['rpd_url'] = rpd_list['rpd_url'].apply(lambda x: '=HYPERLINK("%s", "%s")' % (rpd_list['rpd_url'], rpd_list['rpd_number']))
-
+rpd_list['rpd_url'] = rpd_list['rpd_number'].apply(lambda x: p.make_hyperlink(x))
 
 with pd.ExcelWriter(r'C:\Users\mpark\OneDrive - FactSet\Desktop\in_progress.xlsx', engine='openpyxl', if_sheet_exists='overlay', mode='a') as writer:  
     rpd_list['rpd_url'].to_excel(writer, startcol = 1, startrow=max, header = False, index = False)
+
+print('Update successful')
 
 
 
