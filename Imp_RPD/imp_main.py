@@ -19,7 +19,7 @@ machine_sn = '1129032'
 notes = 'Implementation for fx rates from WM/R in snowflake'
 
 chrome_options = webdriver.ChromeOptions()
-#chrome_options.add_argument("headless")
+chrome_options.add_argument("headless")
 driver = webdriver.Chrome(options=chrome_options)
 
 #%%
@@ -48,11 +48,12 @@ def file_rpd(username, imp_package, machine_sn, notes):
     driver.switch_to.default_content() # get out of iframe
 
     # WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.XPATH,'//*[@id="createTemplate"]/div[19]/div[2]/button[1]/span'))).click()
+
+    print ('Ready to file RPD. Please cancel if this was not intended')
+
     for i in range(10,0,-1):
         print(f"{i}", end="\r", flush=True)
         time.sleep(1)
-
-    # 'tasks done, now sleeping for 10 seconds'
 
     # file it
     
