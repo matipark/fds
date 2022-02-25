@@ -17,9 +17,9 @@ imp_package = 'Snowflake WM/R FX rates implementation'
 machine_sn = '1129032'
 notes = 'Implementation for fx rates from WM/R in snowflake'
 
-options = webdriver.ChromeOptions()
-# options.add_argument("headless")
-driver = webdriver.Chrome(chrome_options=options)
+chrome_options = webdriver.ChromeOptions()
+chrome_options.add_argument("headless")
+driver = webdriver.Chrome(options=chrome_options)
 
 #%%
 
@@ -29,10 +29,9 @@ def file_rpd(username, imp_package, machine_sn, notes):
 
     driver.get("https://rpd.factset.io/create") # open the browser
 
-
     WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.XPATH,'//*[@id="createTemplate"]/div[6]/div[2]/property/div/button[1]/span'))).click() # Question
-    driver.find_element_by_xpath('//*[@id="createTemplate"]/div[8]/div[2]/property/div/button[2]/span').click() # Medium
-    driver.find_element_by_xpath('//*[@id="createTemplate"]/div[1]/div[2]/input').send_keys(title) # write title
+    WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.XPATH,'//*[@id="createTemplate"]/div[8]/div[2]/property/div/button[2]/span'))).click() # Medium
+    WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.XPATH,'//*[@id="createTemplate"]/div[1]/div[2]/input'))).send_keys(title) # write title
 
     driver.find_element_by_xpath('//*[@id="createTemplate"]/div[2]/div[2]/ui-productsuggest/input').send_keys('Implementation - CTS Standard Datafeed') # search category
     WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.XPATH,'//tr [@data-qa-id="product_43276"]'))).click() # select category
@@ -65,9 +64,12 @@ def file_rpd(username, imp_package, machine_sn, notes):
     return rpd_link
 
 
-def make_hyperlink(value):
-    url = "http://is.factset.com/rpd/Summary.aspx?messageId={}"
-    return '=HYPERLINK("%s", "%s")' % (url.format(value), value)
+# function to make hyperlink
+# def make_hyperlink(value):
+#     url = "http://is.factset.com/rpd/Summary.aspx?messageId={}"
+#     return '=HYPERLINK("%s", "%s")' % (url.format(value), value)
+
+
 
 # %%
 

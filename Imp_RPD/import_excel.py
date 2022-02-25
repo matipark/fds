@@ -3,7 +3,7 @@
 
 import pandas as pd
 import imp_main as p
-import time
+#import time
 
 #%%
 
@@ -11,34 +11,42 @@ df = pd.read_excel(r'C:\Users\mpark\OneDrive - FactSet\Desktop\in_progress.xlsx'
 
 df_na = df.dropna(subset=['Imp_rpd'])
 df_keep = df.drop(df_na.index)
-df_keep
+df_keep.reset_index(drop=True, inplace=True)
 
 max = len(df.dropna(subset=['Imp_rpd']))+1
+rpd_list = pd.DataFrame(columns = ['rpd_url', 'rpd_number'], index = [0, 1])
+
 
 #%%
 
 for index, row in df_keep.iterrows():
-    username = row[2]
-    imp_package = row[4]
-    machine_sn = row[3]
+    username = str(row[2])
+    imp_package = str(row[3])
+    machine_sn = row[4]
     notes = row[5]
-    print (username, imp_package, machine_sn, notes)
+    print ('In progress: ' + username, imp_package, machine_sn, notes)
     rpd_url = p.file_rpd(username, imp_package, machine_sn, notes)
-    print (rpd_url)
+    print ('Success: ' + rpd_url)
+    rpd_list['rpd_url'].loc[index] = rpd_url
     rpd_number = rpd_url[-8:]
-    time.sleep (3)
+    rpd_list['rpd_number'].loc[index] = rpd_number
+    #time.sleep (3)
+
+# rpd_url = "http://is.factset.com/rpd/Summary.aspx?messageId="
 
 
+# test
+# rpd_list = pd.DataFrame([["http://is.factset.com/rpd/Summary.aspx?messageId=123455", 123455],["http://is.factset.com/rpd/Summary.aspx?messageId=2432123",2432123],["http://is.factset.com/rpd/Summary.aspx?messageId=254523",254523]], columns = ['rpd_url','rpd_number'])
 
-# %%
+# using hyperlink function
+# rpd_list['rpd_url'] = rpd_list['rpd_url'].apply(lambda x: p.make_hyperlink(x))
 
 
-rpd_list = pd.DataFrame([[123455],[2432123],[254523]], columns = ['rpd_link'])
+rpd_list['rpd_url'] = rpd_list['rpd_url'].apply(lambda x: '=HYPERLINK("%s", "%s")' % (rpd_list['rpd_url'], rpd_list['rpd_number']))
 
-rpd_list['rpd_link'] = rpd_list['rpd_link'].apply(lambda x: p.make_hyperlink(x))
 
 with pd.ExcelWriter(r'C:\Users\mpark\OneDrive - FactSet\Desktop\in_progress.xlsx', engine='openpyxl', if_sheet_exists='overlay', mode='a') as writer:  
-    rpd_list.to_excel(writer, startcol = 1, startrow=max, header = False, index = False)
+    rpd_list['rpd_url'].to_excel(writer, startcol = 1, startrow=max, header = False, index = False)
 
 
 
