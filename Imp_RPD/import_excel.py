@@ -1,9 +1,7 @@
 #%%
 
-
 import pandas as pd
 import imp_main as p
-
 
 #%%
 

@@ -6,6 +6,7 @@ from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
+import time
 
 
 #%%
@@ -34,6 +35,7 @@ def file_rpd(username, imp_package, machine_sn, notes):
     WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.XPATH,'//*[@id="createTemplate"]/div[1]/div[2]/input'))).send_keys(title) # write title
 
     driver.find_element_by_xpath('//*[@id="createTemplate"]/div[2]/div[2]/ui-productsuggest/input').send_keys('Implementation - CTS Standard Datafeed') # search category
+    time.sleep(3)
     WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.XPATH,'//tr [@data-qa-id="product_43276"]'))).click() # select category
 
     # # explicit frame id
