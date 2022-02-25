@@ -35,7 +35,7 @@ def file_rpd(username, imp_package, machine_sn, notes):
     WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.XPATH,'//*[@id="createTemplate"]/div[1]/div[2]/input'))).send_keys(title) # write title
 
     driver.find_element_by_xpath('//*[@id="createTemplate"]/div[2]/div[2]/ui-productsuggest/input').send_keys('Implementation - CTS Standard Datafeed') # search category
-    time.sleep(3)
+    time.sleep(5)
     WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.XPATH,'//tr [@data-qa-id="product_43276"]'))).click() # select category
 
     # # explicit frame id
@@ -62,7 +62,7 @@ def file_rpd(username, imp_package, machine_sn, notes):
 
     # extract rpd number
     rpd_link = driver.find_element_by_xpath('//*[@id="summaryContent"]/div[1]/div[1]/table/tbody/tr/td[1]/a').get_attribute('href')
-
+    time.sleep(5)
     return rpd_link
 
 
