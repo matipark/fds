@@ -21,6 +21,7 @@ notes = 'Implementation for fx rates from WM/R in snowflake'
 chrome_options = webdriver.ChromeOptions()
 chrome_options.add_argument("headless")
 driver = webdriver.Chrome(options=chrome_options)
+driver.maximize_window()
 
 #%%
 
@@ -49,9 +50,9 @@ def file_rpd(username, imp_package, machine_sn, notes):
 
     # WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.XPATH,'//*[@id="createTemplate"]/div[19]/div[2]/button[1]/span'))).click()
 
-    print ('Ready to file RPD. Please cancel if this was not intended')
+    print ('Ready to file RPD. Please cancel if this was not intended.')
 
-    for i in range(10,0,-1):
+    for i in range(5,0,-1):
         print(f"{i}", end="\r", flush=True)
         time.sleep(1)
 

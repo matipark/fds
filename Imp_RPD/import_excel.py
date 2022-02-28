@@ -2,8 +2,7 @@
 
 import pandas as pd
 import imp_main as p
-
-#%%
+from IPython.display import display
 
 df = pd.read_excel(r'C:\Users\mpark\OneDrive - FactSet\Desktop\in_progress.xlsx')
 
@@ -14,8 +13,7 @@ df_keep.reset_index(drop=True, inplace=True)
 max = len(df.dropna(subset=['Imp_rpd']))+1
 rpd_list = pd.DataFrame(columns = ['rpd_url', 'rpd_number'], index = [0, 1])
 
-df_keep
-
+display(df_keep)
 
 for index, row in df_keep.iterrows():
     username = str(row[2])
