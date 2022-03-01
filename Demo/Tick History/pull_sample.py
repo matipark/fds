@@ -14,11 +14,11 @@ load_dotenv()
 
 #ticker = 'TLT,TMF,TMV,TBT,TTT,UBT,HYS,HYG,SJB,UJB,EMLC,EMB,ISRWF,IJPBF,ISJPF,VANVF,VNQ,DRN,DRV,GSG,GSP,DBB,DBA,XLY,XLP,XLE,XLF,XLV,XLB,XLU,DIA,XOP,XME,EEM,INDA,SPY,IJH,IJR'
 
-ticker = 'SIXY,VIX,SIXR'
+ticker = 'RELIANCE,TCS,HDFCBANK,NFTYJ22,NFTYH22'
 
-iso_code = 'CBO'
-start_date = "2022-02-08"
-end_date = "2022-02-08"
+iso_code = 'NSE'
+start_date = "2021-06-14"
+end_date = "2021-06-14"
 
 output_dir = r'C:\Users\mpark\OneDrive - FactSet\Desktop\Sample\_'
 authorization = (os.getenv('usernamee'),os.getenv('passs'))
@@ -100,6 +100,25 @@ for z in range (100):
         time.sleep(5)
 
 
+# for z in range (100):
+#     tick_get_static = tick_get_response()
+#     print('Loop number: ' + f"{z}", end="\r", flush=True)
+#     if tick_get_static.status_code == 200:
+#         status = tick_get_static.json()['status']
+#         if status == 'Completed':
+#             print('Status: Completed\n')
+#             break
+#         elif status == 'Declined':
+#             print('Status: Declined\n')
+#             break
+#         else:
+#             print('Status: ' + f"{status}", end="\r", flush=True)
+#             time.sleep(15)
+#     else:
+#         print('Status Code: {}'.format(tick_get_static.status_code))
+#         print('Error: Rerunning')
+#         time.sleep(5)
+
 #%%
 
 # Looping through the list of URLs / building 
@@ -126,7 +145,7 @@ for i,j in enumerate(url_list):
     else:
         print ('Error')
         #create filename
-    local_filename = output_dir + 'port_' + end_date + '_' +str(i+1) + '.csv.gz'
+    local_filename = output_dir + iso_code + '_' + end_date + '_' +str(i+1) + '.csv.gz'
 
     with open(local_filename, 'wb') as f:
         for chunk in r.iter_content(chunk_size = 1024):
