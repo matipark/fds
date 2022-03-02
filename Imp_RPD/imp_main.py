@@ -20,7 +20,7 @@ machine_sn = '1129032'
 notes = 'Implementation for fx rates from WM/R in snowflake'
 
 chrome_options = webdriver.ChromeOptions()
-#chrome_options.add_argument("headless")
+chrome_options.add_argument("headless")
 driver = webdriver.Chrome(options=chrome_options)
 driver.maximize_window()
 

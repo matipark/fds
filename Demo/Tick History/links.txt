@@ -1,0 +1,2 @@
+https://api.factset.com/bulk-documents/tickhistory/v1/request-files?ticker=RELIANCE,TCS,HDFCBANK&iso_code=NSE&fields=%2A&start_date=2021-06-14&end_date=2021-06-14
+https://api.factset.com/bulk-documents/tickhistory/v1/get-files?requestId=fafbc000-8ef3-4a28-827f-02e55995f967&_paginationLimit=100&_paginationOffset=0
