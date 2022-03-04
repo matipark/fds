@@ -6,13 +6,18 @@ from requests.packages.urllib3.exceptions import InsecureRequestWarning
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 from pandas.io.json import json_normalize
 
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+
 
 # %%
 
-authorization = ('FDS_DEMO_FE-410734','06LE9ERlxk7vS5AIwHFmThwJo0oX6ojGUUDVthEg')
+authorization = (os.getenv('username_universal'),os.getenv('pass_home'))
+
+
 fund_holdings_endpoint = 'https://api.factset.com/content/factset-ownership/v1/fund-holdings'
-
-
 fund_holdings_request = {
   "ids": [
     "FDIVX-US"
@@ -21,11 +26,8 @@ fund_holdings_request = {
   "topn": 1000,
   "assetType": "EQ"
 }
-
 headers = {'Accept': 'application/json','Content-Type': 'application/json'}
-
-# %%
-
+#  3.1b `/factset-ownership/v1/fund-holdings` - Pull data, display datafame properties, show initial records
 fund_holdings_post = json.dumps(fund_holdings_request)
 fund_holdings_response = requests.post(url = fund_holdings_endpoint, data=fund_holdings_post, auth = authorization, headers = headers, verify= False )
 print('HTTP Status: {}'.format(fund_holdings_response.status_code))
@@ -40,5 +42,7 @@ print('RECORDS:',len(fund_holdings_df))
 # #### Display the Records
 print(fund_holdings_df[['fsymId','requestId','fsymSecurityId','fsymRegionalId','date','securityName','securityTicker','issueType','adjHolding','adjMarketValue']].tail())
 
+                
 
+# %%
 # %%

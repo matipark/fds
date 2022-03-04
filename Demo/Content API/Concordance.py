@@ -6,14 +6,17 @@ import json
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 from pandas.io.json import json_normalize
-# First you must Authorize your requests by pulling in your USERNAME-SERIAL and API-Key. Insert those values below - 
+
+# auth
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 
 #%%
 
-#authorization = ('FDS_DEMO_FE-410734','06LE9ERlxk7vS5AIwHFmThwJo0oX6ojGUUDVthEg')
-# Office key
-authorization = ('FDS_DEMO_FE-410734','GItuvdYsPrZl84GJQmjVzl0Krn9SYSjw3jnscEYy')
+# auth 
+authorization = (os.getenv('username_universal'),os.getenv('pass_home')) ##pass_office
 
 ###
 entity_match_endpoint = 'https://api.factset.com/content/factset-concordance/v1/entity-match'

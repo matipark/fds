@@ -2,7 +2,8 @@
 
 import queries as q
 
-username_list = ['prism_kr', 'perpetual', 'yonhap_kr','mac_cs_au','Doom_KR']
+#username_list = ['prism_kr', 'perpetual', 'yonhap_kr','mac_cs_au','Doom_KR']
+username_list = ['yonhap_kr','bellpotter','OPNMARKET_AU']
 start_date = 'now-7d'
 max_size = 10
 apikey = 'apikey 6b9ea362-bcdf-4fcc-b0a0-d693a978a7bd' 

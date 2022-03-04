@@ -10,14 +10,20 @@ requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 from pandas.io.json import json_normalize
 
 
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+
 #%%
 
 fundamentals_endpoint = 'https://api.factset.com/content/factset-fundamentals/v1/metrics?category=RATIOS&subcategory=VALUATION'
 
 
 # %%
-authorization = ('FDS_DEMO_FE-410734','06LE9ERlxk7vS5AIwHFmThwJo0oX6ojGUUDVthEg')
 
+# auth
+authorization = (os.getenv('username_universal'),os.getenv('pass_home'))
 #headers = {'Accept': 'application/json','Content-Type': 'application/json'}
 
 # Create a POST Request

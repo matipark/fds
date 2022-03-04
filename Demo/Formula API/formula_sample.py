@@ -16,7 +16,9 @@ import json
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
-
+import os
+from dotenv import load_dotenv
+load_dotenv()
 #%%
 
 # 2. Create a connection object
@@ -24,8 +26,8 @@ requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 # Enter your credentials for 'Username' and 'API Key' below.
 # To generate an API key, visit (https://developer.factset.com/authentication) for more details on Authentication.
 
-# authorization = ('FDS_DEMO_FE-410734','06LE9ERlxk7vS5AIwHFmThwJo0oX6ojGUUDVthEg')
-authorization = ('HLIM-FDS','wiZurpIs5Owo4nvK3wIWczv7nAou4FC1JkzxST7b')
+authorization = (os.getenv('username_universal'),os.getenv('pass_home'))
+
 
 # Set Required Headers
 headers = {'Accept': 'application/json','Content-Type': 'application/json'}

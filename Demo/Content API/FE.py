@@ -10,11 +10,16 @@ from requests.packages.urllib3.exceptions import InsecureRequestWarning
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 from pandas.io.json import json_normalize
 
+# auth
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+
 # 2. Create a connection object
 
-#authorization = ('FDS_DEMO_FE-410734','06LE9ERlxk7vS5AIwHFmThwJo0oX6ojGUUDVthEg')
-#Office API key
-authorization = ('FDS_DEMO_FE-410734','GItuvdYsPrZl84GJQmjVzl0Krn9SYSjw3jnscEYy')
+# auth
+authorization = (os.getenv('username_universal'),os.getenv('pass_home'))
 
 # 3.0 FactSet Estimates API Endpoint Details
 

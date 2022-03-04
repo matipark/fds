@@ -5,6 +5,12 @@ import json
 from pandas.io.json import json_normalize
 import pandas as pd
 
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+
+
 # parameters
 
 ticker = 'SI00-USA'
@@ -15,7 +21,10 @@ end_date = '20200930'
 start_time = '000000'
 end_time = '235959'
 interval = '1H'
-authorization = ('FDS_DEMO_FE-410734','06LE9ERlxk7vS5AIwHFmThwJo0oX6ojGUUDVthEg')
+
+authorization = (os.getenv('username_universal'),os.getenv('pass_home'))
+
+
 
 
 #%%

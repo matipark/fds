@@ -9,6 +9,11 @@ from requests.packages.urllib3.exceptions import InsecureRequestWarning
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 from pandas.io.json import json_normalize
 
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+
 # https://api.factset.com/content/factset-fundamentals/v1/metrics
 
 tickers = [
@@ -19,7 +24,7 @@ tickers = [
 
 # 2. Create a connection object
 
-authorization = ('FDS_DEMO_FE-410734','06LE9ERlxk7vS5AIwHFmThwJo0oX6ojGUUDVthEg')
+authorization = (os.getenv('username_universal'),os.getenv('pass_home'))
 
 # 3.1 Fundamentals
 

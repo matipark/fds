@@ -21,7 +21,7 @@ start_date = "2021-06-14"
 end_date = "2021-06-14"
 
 output_dir = r'C:\Users\mpark\OneDrive - FactSet\Desktop\Sample\_'
-authorization = (os.getenv('usernamee'),os.getenv('passs'))
+authorization = (os.getenv('username_universal'),os.getenv('pass_home'))
 
 
 #%%
@@ -61,6 +61,7 @@ else:
 #%%
 
 ## DATA GET REQUEST / STATUS CHECK ##
+
 def tick_get_response():
     tick_get_endpoint = 'https://api.factset.com/bulk-documents/tickhistory/v1/get-files'
 
@@ -79,6 +80,8 @@ print('Request ID: {}'.format(req_id))
 print('Status: {}'.format(tick_get_response().json()['status']))
 
 #%%
+
+# Loop to check the status of the request
 
 for z in range (100):
     tick_get_static = tick_get_response()
@@ -100,25 +103,6 @@ for z in range (100):
         time.sleep(5)
 
 
-# for z in range (100):
-#     tick_get_static = tick_get_response()
-#     print('Loop number: ' + f"{z}", end="\r", flush=True)
-#     if tick_get_static.status_code == 200:
-#         status = tick_get_static.json()['status']
-#         if status == 'Completed':
-#             print('Status: Completed\n')
-#             break
-#         elif status == 'Declined':
-#             print('Status: Declined\n')
-#             break
-#         else:
-#             print('Status: ' + f"{status}", end="\r", flush=True)
-#             time.sleep(15)
-#     else:
-#         print('Status Code: {}'.format(tick_get_static.status_code))
-#         print('Error: Rerunning')
-#         time.sleep(5)
-
 #%%
 
 # Looping through the list of URLs / building 
@@ -137,6 +121,8 @@ for i in range(files_num):
 print('Number of URLs: {}'.format(len(url_list)))
 
 #%%
+
+# Download files into the folder
 
 for i,j in enumerate(url_list):
     r = requests.get(url=j)

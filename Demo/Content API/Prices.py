@@ -6,10 +6,15 @@ from requests.packages.urllib3.exceptions import InsecureRequestWarning
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 from pandas.io.json import json_normalize
 
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+
 
 # %%
 
-authorization = ('FDS_DEMO_FE-410734','06LE9ERlxk7vS5AIwHFmThwJo0oX6ojGUUDVthEg')
+authorization = (os.getenv('username_universal'),os.getenv('pass_home'))
 prices_endpoint = 'https://api.factset.com/content/factset-prices/v1/prices'
 
 
@@ -49,3 +54,4 @@ print(prices_df[["fsymId","date","adjDate","currency","price","priceOpen","price
 # %%
 
 prices_df
+# %%
