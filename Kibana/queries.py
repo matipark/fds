@@ -7,6 +7,12 @@ import time
 from datetime import date
 from tqdm import tqdm
 
+# auth
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+
 today = date.today().strftime("%Y%m%d")
 
 username = 'mac_cs_au'
@@ -14,8 +20,7 @@ username_list = ['prism_kr', 'perpetual', 'yonhap_kr','mac_cs_au','Doom_KR']
 
 max_size = 5
 start_date = 'now-30d'
-apikey = 'apikey 6b9ea362-bcdf-4fcc-b0a0-d693a978a7bd' 
-
+apikey = os.getenv('kibana_api')
 
 #%%
 

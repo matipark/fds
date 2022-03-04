@@ -1,2 +1,0 @@
-  select distinct sector from sdfdemo_scratch.dbo.ff_sector_long
-  select distinct manager from sdfdemo_scratch.dbo.ff_style_long
