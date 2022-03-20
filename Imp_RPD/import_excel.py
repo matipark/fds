@@ -8,6 +8,19 @@ from IPython.display import display
 
 df = pd.read_excel(r'C:\Users\mpark\OneDrive - FactSet\Desktop\in_progress.xlsx')
 
+#https://factset-my.sharepoint.com/:x:/p/mcruz02_pc/Ed34Ne0SvEVBsI9iXIOisLoBdW3rjgRfafWvpoNX496MzQ?e=4%3amfCLOq&at=9
+
+df = pd.read_csv('https://factset-my.sharepoint.com/:x:/p/mcruz02_pc/Ed34Ne0SvEVBsI9iXIOisLoBdW3rjgRfafWvpoNX496MzQ?e=4%3amfCLOq&at=9',
+                 sep='\t',
+                 parse_dates=[0],
+                 names=['a','b','c','d','e','f'])
+print (df)
+
+
+#%%
+
+
+
 df_na = df.dropna(subset=['Imp_rpd'])
 df_keep = df.drop(df_na.index)
 df_keep.reset_index(drop=True, inplace=True)
