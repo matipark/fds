@@ -22,6 +22,7 @@ max_size = 5
 start_date = 'now-30d'
 apikey = os.getenv('kibana_api')
 
+
 #%%
 
 def content_api_endpoint(apikey,username,start_date):
