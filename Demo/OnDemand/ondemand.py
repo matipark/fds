@@ -12,6 +12,11 @@ from Kratos_3 import *
 from Kratos_3.Network import *
 from Kratos_3.RunTimePlatform import *
 
+
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
 def printOutFactletResults(df):
     if(df.hasError()):
         df.throwErrorIfAnyIsPresent()
@@ -25,8 +30,9 @@ fsod = FactSetOnDemand()
 config = fsod.getConfig()
 
 # Set our configuration. We definitely need to set our username and password, as given to us by FactSet Support staff
-config.setConfig(ConfigOptions.DataDirectUserName, "FDS_DEMO_FE_410734_SERVICES")
-config.setConfig(ConfigOptions.DataDirectPassword, "4XJJNU4Jad6Ftf8n")
+config.setConfig(ConfigOptions.DataDirectUserName, os.getenv('DataDirectUserName'))
+config.setConfig(ConfigOptions.DataDirectPassword, os.getenv('DataDirectPassword'))
+
 
 
 # %%
