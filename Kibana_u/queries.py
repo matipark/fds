@@ -15,7 +15,7 @@ load_dotenv()
 
 today = date.today().strftime("%Y%m%d")
 
-username = 'mac_cs_au'
+username = 'l1capital'
 username_list = ['prism_kr', 'perpetual', 'yonhap_kr','mac_cs_au','Doom_KR']
 
 max_size = 5
@@ -298,6 +298,11 @@ def ondemand_endpoint(apikey,username,start_date,max_size):
                 {
                     "match_phrase": {
                     "@fields.service.raw": "datafetch"
+                    }
+                },
+                {
+                    "match_phrase": {
+                    "@fields.service.raw": "newsfetch"
                     }
                 }
                 ],
