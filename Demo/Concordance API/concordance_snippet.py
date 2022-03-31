@@ -16,7 +16,7 @@ authorization = (os.getenv('username_universal'),os.getenv('pass_home')) ##pass_
 #%%
 
 ###
-entity_match_endpoint = 'https://api.factset.com/content/factset-concordance/v1/entity-match'
+entity_match_endpoint = 'https://api.factset.com/content/factset-concordance/v2/entity-match'
 
 entity_match_request ={
   "input": [{"name":"Apple Inc.","clientId": "abc-123"},
