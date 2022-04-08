@@ -16,8 +16,8 @@ serial = '410734' #Insert Serial Number tied to machine account provided by your
 
 output_dir = r'C:\Users\mpark\OneDrive - FactSet\Desktop\Test\_'
 
-#read key.txt
-keyfile = r'C:\Users\mpark\OneDrive - FactSet\Documents\Loader_app\key2.txt'
+#read key.txt different to the one for Loader
+keyfile = r'C:\Users\mpark\OneDrive - FactSet\Documents\Loader_app\key_ondemand.txt'
 d = {}
 with open(keyfile) as f:
     for line in f:
@@ -67,7 +67,7 @@ r = requests.get(Service_url,headers=header)
 
 #update counter and write to key.txt
 counter += 1
-with open(r'C:\Users\mpark\OneDrive - FactSet\Documents\Loader_app\key.txt2','w') as f:
+with open(r'C:\Users\mpark\OneDrive - FactSet\Documents\Loader_app\key_ondemand.txt','w') as f:
     f.write('KeyId: '+ keyId + '\n')
     f.write('Key: '+ key + '\n')
     f.write('Counter: '+ str(counter))
@@ -91,7 +91,7 @@ payload = { 'report': 'search',
 #define the request type as a search
 'sd': sd,
 'ed': ed,
-'sources': 'EDG',
+'sources': 'fcst',#'EDG',
 'ids': 'aapl-us',
 #'sa_categories': 'SA_EARNINGS',
 'n' : '10'
@@ -103,7 +103,7 @@ url = 'https://datadirect.factset.com/services/NewsFetch'
 #Make request
 r= requests.get(url,params=payload,headers=header)
 print('Status Code: {:d}'.format(r.status_code))
-print(r.content)
+#print(r.content)
 #read in XML response
 doc = minidom.parseString(r.content)
 search_results = doc.getElementsByTagName('RecordsReturned')
