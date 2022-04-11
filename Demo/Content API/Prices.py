@@ -4,7 +4,7 @@ import requests
 import json
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
-from pandas.io.json import json_normalize
+from pandas import json_normalize
 
 import os
 from dotenv import load_dotenv
