@@ -1,1 +1,2 @@
 https://machinelearningmastery.com/elastic-net-regression-in-python/
+https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.normalize.html
