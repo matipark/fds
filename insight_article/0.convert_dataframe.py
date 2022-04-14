@@ -12,8 +12,8 @@ import loadsql #functions to load sql queries
 dsn = 'FDSServer'
 connection_to_sql = pyodbc.connect('DSN={dsn_name}'.format(dsn_name = dsn))
 
-how_many = connection_to_sql.getinfo(pyodbc.SQL_MAX_CONCURRENT_ACTIVITIES)
-print(how_many)
+# how_many = connection_to_sql.getinfo(pyodbc.SQL_MAX_CONCURRENT_ACTIVITIES)
+# print(how_many)
 
 #%%
 
