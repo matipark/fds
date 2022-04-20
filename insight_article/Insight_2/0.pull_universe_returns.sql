@@ -1,5 +1,5 @@
 
-DECLARE @p_date date = '2022-04-13' --'{p_date}'
+DECLARE @p_date date = '2022-04-18' --'{p_date}'
 DECLARE @bdx_board_char_type VARCHAR(50) = 'Overall Board Characteristics' --'{bdx_board_char_type}'
 
 select b.proper_name, b.fsym_security_id, a.*, e.*
