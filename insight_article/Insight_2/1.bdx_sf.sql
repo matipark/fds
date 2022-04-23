@@ -1,7 +1,4 @@
 
-
-
-
 select last_day(
   
   
@@ -12,12 +9,14 @@ else date(replace(concat('1 ', BDX_ANNUAL_REPORT_DATE), ' ', '-'))
 
 end
   
-) as datetime, a.*
+) as datetime, a.*, f.FF_ROA, f.FF_ROE, f.FF_ROTC, g.FF_DEBT_COM_EQ, g.FF_DEBT_ENTRPR_VAL, g.FF_DEBT_EQ
 from "FDS"."BDX_V1"."BDX_BOARD_CHAR" a 
 join "FDS"."BDX_V1"."BDX_COMPANY_STOCKS" b on a.bdx_company_id = b.bdx_company_id
 join "FDS"."BDX_V1"."BDX_FACTSET_ID_MAP" c on c.provider_id = b.bdx_security_id
 join "FDS"."SYM_V1"."SYM_COVERAGE" d on c.factset_id = d.fsym_security_id
 join "FDS"."FF_V3"."FF_ADVANCED_AF" e on d.fsym_id = e.fsym_id and datetime = e.date
+join "FDS"."FF_V3"."FF_BASIC_DER_AF" f on e.fsym_id = f.fsym_id and f.date = e.date
+join "FDS"."FF_V3"."FF_ADVANCED_DER_AF" g on f.fsym_id = g.fsym_id and f.date = g.date
 
 where a.bdx_nationality_mix <> 0 and a.bdx_gender_ratio <> 100 and a.bdx_board_char_type = 'Overall Board Characteristics' and d.fsym_id in 
 

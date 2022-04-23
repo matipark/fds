@@ -2,4 +2,7 @@ https://machinelearningmastery.com/elastic-net-regression-in-python/
 https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.normalize.html
 
 
-https://www.kaggle.com/code/junkal/selecting-the-best-regression-model/notebookbu
+https://www.kaggle.com/code/junkal/selecting-the-best-regression-model/notebook
+
+
+https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.corrwith.html
