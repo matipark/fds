@@ -9,7 +9,7 @@ else date(replace(concat('1 ', BDX_ANNUAL_REPORT_DATE), ' ', '-'))
 
 end
   
-) as datetime, a.*, f.FF_ROA, f.FF_ROE, f.FF_ROTC, g.FF_DEBT_COM_EQ, g.FF_DEBT_ENTRPR_VAL, g.FF_DEBT_EQ
+) as datetime, a.*, f.FF_ROA, f.FF_ROE, f.FF_ROTC
 from "FDS"."BDX_V1"."BDX_BOARD_CHAR" a 
 join "FDS"."BDX_V1"."BDX_COMPANY_STOCKS" b on a.bdx_company_id = b.bdx_company_id
 join "FDS"."BDX_V1"."BDX_FACTSET_ID_MAP" c on c.provider_id = b.bdx_security_id

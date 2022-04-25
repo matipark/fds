@@ -60,11 +60,12 @@ print("Process finished --- %s seconds ---" % (time.time() - start_time))
 df_1.head(3)
 
 
+
 # %%
 
 df_1.info(verbose=True)
 print(df_1.shape)
-print(df_1.isnull().any())
+#print(df_1.isnull().any())
 
 # %%
 
@@ -74,6 +75,9 @@ df_1['DATETIME'] = pd.to_datetime(df_1['DATETIME']) #datetime
 data = df_1.set_index('BDX_COMPANY_ID') #company ID as index
 
 data = data.dropna() #subset='FF_ROE'
+
+
+print(data.shape)
 
 #%%
 
