@@ -50,7 +50,12 @@ sql_query_1 = loadsql.get_sql_q('1.bdx_sf.sql',show=0,connection=dsn, skipSubsCh
 with warnings.catch_warnings():
     warnings.simplefilter('ignore', UserWarning)
     df_1 = pd.read_sql(sql_query_1,connection_to_sql)
-#df_1['p_date'] = pd.to_datetime(df_1['p_date']).dt.date #, format='%Y-%m-%d')
+
+
+sql_query_2 = loadsql.get_sql_q('1.bdx_sp50_sf.sql',show=0,connection=dsn, skipSubsCheck=1).format(bdx_board_char_type=bdx_board_char_type)
+with warnings.catch_warnings():
+    warnings.simplefilter('ignore', UserWarning)
+    df_2 = pd.read_sql(sql_query_2,connection_to_sql)
 
 print("Process finished --- %s seconds ---" % (time.time() - start_time))
 
@@ -59,25 +64,30 @@ print("Process finished --- %s seconds ---" % (time.time() - start_time))
 
 df_1.head(3)
 
-
-
 # %%
 
-df_1.info(verbose=True)
-print(df_1.shape)
+#df_1.info(verbose=True)
 #print(df_1.isnull().any())
+
+
+print(df_1.shape)
+print(df_2.shape)
 
 # %%
 
 #feature engineering
 
 df_1['DATETIME'] = pd.to_datetime(df_1['DATETIME']) #datetime
-data = df_1.set_index('BDX_COMPANY_ID') #company ID as index
+data_1 = df_1.set_index('BDX_COMPANY_ID') #company ID as index
+data_1 = data_1.dropna(subset=['FF_ROE','FF_ROA','FF_ROTC'])
 
-data = data.dropna() #subset='FF_ROE'
+df_2['DATETIME'] = pd.to_datetime(df_2['DATETIME']) #datetime
+data_2 = df_2.set_index('BDX_COMPANY_ID') #company ID as index
+data_2 = data_2.dropna(subset=['FF_ROE','FF_ROA','FF_ROTC'])
 
 
-print(data.shape)
+print(data_1.shape)
+print(data_2.shape)
 
 #%%
 
@@ -94,27 +104,46 @@ print(data.shape)
 
 #%%
 
+# Russell 3000
 
-rho = data.corr()
-pval = data.corr(method=lambda x, y: pearsonr(x, y)[1]) - np.eye(*rho.shape)
+rho = data_1.corr()
+pval = data_1.corr(method=lambda x, y: pearsonr(x, y)[1]) - np.eye(*rho.shape)
 p = pval.applymap(lambda x: ''.join(['*' for t in [0.01,0.05,0.1] if x<=t]))
-result = rho.round(2).astype(str) + p
-result
+result_1 = rho.round(2).astype(str) + p
+
+result_1[['FF_ROA','FF_ROE','FF_ROTC']]
+
+#%%
+
+#SP 500
+
+rho = data_2.corr()
+pval = data_2.corr(method=lambda x, y: pearsonr(x, y)[1]) - np.eye(*rho.shape)
+p = pval.applymap(lambda x: ''.join(['*' for t in [0.01,0.05,0.1] if x<=t]))
+result_2 = rho.round(2).astype(str) + p
+
+result_2[['FF_ROA','FF_ROE','FF_ROTC']]
+
+
 
 #%%
 
 
-result.to_excel("output_correl.xlsx", engine='xlsxwriter')
+result_1.to_excel("output_correl_r3000.xlsx", engine='xlsxwriter')
+result_2.to_excel("output_correl_sp50.xlsx", engine='xlsxwriter')
 
 
 #%%
 
 # Try to show only relevant columns
 
-# data1 = data.loc[:, data.columns.isin(['FF_ROA', 'FF_ROTC', 'FF_DEBT_COM_EQ', 'FF_DEBT_ENTRPR_VAL', 'FF_DEBT_EQ'])]
+# data1 = data.loc[:, data.columns.isin(['FF_ROE','FF_ROA', 'FF_ROTC'])]
+# data1
 
-# rho = data.corrwith(data1)
-# pval = data.corrwith(data['FF_ROA'], method=lambda x, y: pearsonr(x, y)[1]) - np.eye(*rho.shape)
+# #%%
+
+# rho = data.corrwith(data1, axis=0)
+# pval = data.corrwith(data['FF_ROE'], method=lambda x, y: pearsonr(x, y)[1]) - np.eye(*rho.shape)
 # p = pval.applymap(lambda x: ''.join(['*' for t in [0.01,0.05,0.1] if x<=t]))
 # rho.round(2).astype(str) + p
 
