@@ -64,10 +64,6 @@ df_1.head(3)
 
 df_1.info(verbose=True)
 print(df_1.shape)
-
-
-# %%
-
 print(df_1.isnull().any())
 
 # %%
@@ -98,8 +94,13 @@ data = data.dropna() #subset='FF_ROE'
 rho = data.corr()
 pval = data.corr(method=lambda x, y: pearsonr(x, y)[1]) - np.eye(*rho.shape)
 p = pval.applymap(lambda x: ''.join(['*' for t in [0.01,0.05,0.1] if x<=t]))
-rho.round(2).astype(str) + p
+result = rho.round(2).astype(str) + p
+result
 
+#%%
+
+
+result.to_excel("output_correl.xlsx", engine='xlsxwriter')
 
 
 #%%
