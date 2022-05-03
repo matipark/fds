@@ -60,7 +60,7 @@ print("Process finished --- %s seconds ---" % (time.time() - start_time))
 # %%
 
 
-df_1.head(3)
+df_1.head(30)
 
 # %%
 
@@ -109,7 +109,9 @@ pval = data_1.corr(method=lambda x, y: pearsonr(x, y)[1]) - np.eye(*rho.shape)
 p = pval.applymap(lambda x: ''.join(['*' for t in [0.01,0.05,0.1] if x<=t]))
 result_1 = rho.round(2).astype(str) + p
 
-result_1[['FF_ROA','FF_ROE','FF_ROTC']]
+#%%
+
+result_1[['FF_ROA','FF_ROE','FF_ROTC']].loc[~result_1.index.isin(['FF_ROA','FF_ROE','FF_ROTC'])]
 
 #%%
 
@@ -120,15 +122,15 @@ pval = data_2.corr(method=lambda x, y: pearsonr(x, y)[1]) - np.eye(*rho.shape)
 p = pval.applymap(lambda x: ''.join(['*' for t in [0.01,0.05,0.1] if x<=t]))
 result_2 = rho.round(2).astype(str) + p
 
-result_2[['FF_ROA','FF_ROE','FF_ROTC']]
+result_2[['FF_ROA','FF_ROE','FF_ROTC']].loc[~result_2.index.isin(['FF_ROA','FF_ROE','FF_ROTC'])]
 
 
 
 #%%
 
 
-result_1.to_excel("output_correl_r3000.xlsx", engine='xlsxwriter')
-result_2.to_excel("output_correl_sp50.xlsx", engine='xlsxwriter')
+result_1[['FF_ROA','FF_ROE','FF_ROTC']].loc[~result_1.index.isin(['FF_ROA','FF_ROE','FF_ROTC'])].to_excel("output_correl_r3000.xlsx", engine='xlsxwriter')
+result_2[['FF_ROA','FF_ROE','FF_ROTC']].loc[~result_2.index.isin(['FF_ROA','FF_ROE','FF_ROTC'])].to_excel("output_correl_sp50.xlsx", engine='xlsxwriter')
 
 
 #%%
