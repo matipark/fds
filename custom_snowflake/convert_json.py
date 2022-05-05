@@ -9,15 +9,33 @@ json_file = 'C:\\Users\\mpark\\OneDrive - FactSet\\Desktop\\CTS\\Snowflake\\FSI\
 df = pd.read_csv(file,sep=',')
 
 
+
+# taking a look at the sample table, datatype, convert date if necessary
+
+df.dtypes
+
+df.info()
+
+df['Effective Date'].astype('datetime64[ns]')
+
+df['Effective Date'] = pd.to_datetime(df['Effective Date'], format='%Y%m%d')
+df['Revision Date'] = pd.to_datetime(df['Revision Date'], format='%Y%m%d')
+
+
+
+
+
 #%%
 
 with open(json_file, "w") as output:
         output.write(str('JSON file created below. Please add primary key details in the format "isPK":true below type values.')+"\n")
 
+# testing if all columns are recognized type
+
 col_list_types = []
 delimiter = ','
 for col in df.columns:
-    if df[col].dtypes =='object' or df[col].dtypes =='bool' or df[col].dtypes =='float64' or df[col].dtypes =='int64':
+    if df[col].dtypes =='object' or df[col].dtypes =='bool' or df[col].dtypes =='datetime64[ns]' or df[col].dtypes =='float64' or df[col].dtypes =='int64':
         pass
     else: col_list_types.append(col)
 
@@ -30,8 +48,9 @@ else:
     with open(json_file, "a") as output:
         output.write(str("The following columns' data types are unrecognized:")
                      +str(col_list_types_delim)
-                     +str(". Manually enter data type below and ping Devin to review why this happened.")+"\n"+"\n")
+                     +"\n"+"\n")
 
+# checking columns that are null
 
 col_list_null = []
 delimiter = ','
@@ -50,6 +69,27 @@ else:
                      +str(col_list_null_delim)
                      +str(". Please confirm data type and enter manually below.")+"\n")
         
+
+# defining PK column
+
+col_list_pk = []
+delimiter = ','
+for col in df.columns:
+    if df[col].is_unique==True and df[col].isnull().any()==False:
+        col_list_pk.append(col)
+    else: pass
+
+col_list_pk_delim = delimiter.join(col_list_pk)
+
+if len(col_list_pk_delim) == 0:
+    pass
+else:
+    with open(json_file, "a") as output:
+        output.write(str("Some columns only have pk values: ")
+                     +str(col_list_null_delim)
+                     +"\n")
+
+
 
 # col_list_char = []
 # delimiter = ','
@@ -102,6 +142,9 @@ for col in df.columns:
     elif df[col].dtypes =='bool':
             with open(json_file, "a") as output:
                 output.write(str('{')+"\n"+str('"name":"')+col+str('",')+"\n"+str('"type":"BOOLEAN"')+"\n"+str('},')+"\n")
+    elif df[col].dtypes =='datetime64[ns]':
+            with open(json_file, "a") as output:
+                output.write(str('{')+"\n"+str('"name":"')+col+str('",')+"\n"+str('"type":"DATE"')+"\n"+str('},')+"\n")
     elif df[col].dtypes =='float64' or df[col].dtypes =='int64':
             with open(json_file, "a") as output:
                 output.write(str('{')+"\n"+str('"name":"')+col+str('",')+"\n"+str('"type":"NUMERIC"')+"\n"+str('},')+"\n")
@@ -115,4 +158,6 @@ for col in df.columns:
     
 with open(json_file, "a") as output:
         output.write("\n"+str(']')+"\n"+str('}'))
+
+        
 # %%
