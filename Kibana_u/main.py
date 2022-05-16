@@ -9,7 +9,7 @@ load_dotenv()
 
 
 #username_list = ['prism_kr', 'perpetual', 'yonhap_kr','mac_cs_au','Doom_KR']
-username_list = ['yonhap_kr','bellpotter','OPNMARKET_AU','L1CAPITAL', 'RINDEX_AUS']
+username_list = ['perpetual','bellpotter','L1CAPITAL']
 start_date = 'now-7d'
 max_size = 30
 apikey = os.getenv('kibana_api')
