@@ -18,7 +18,7 @@ join "FDS"."FF_V3"."FF_ADVANCED_AF" e on d.fsym_id = e.fsym_id and datetime = e.
 join "FDS"."FF_V3"."FF_BASIC_DER_AF" f on e.fsym_id = f.fsym_id and f.date = e.date
 join "FDS"."FF_V3"."FF_ADVANCED_DER_AF" g on f.fsym_id = g.fsym_id and f.date = g.date
 
-where a.bdx_nationality_mix <> 0 and a.bdx_gender_ratio <> 100 and a.bdx_board_char_type = 'Overall Board Characteristics' and d.fsym_id in 
+where datetime between {start_date_x} and {end_date_x} and a.bdx_nationality_mix <> 0 and a.bdx_gender_ratio <> 100 and a.bdx_board_char_type = {bdx_board_char_type} and d.fsym_id in 
 
 
 
@@ -3056,6 +3056,6 @@ where a.bdx_nationality_mix <> 0 and a.bdx_gender_ratio <> 100 and a.bdx_board_c
 'BFS0V5-R',
 'N3FSJD-R',
 'B71DJZ-R'
-)
+);
 
 

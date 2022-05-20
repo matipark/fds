@@ -1,5 +1,6 @@
 #%%
 
+from locale import D_FMT
 import pandas as pd
 import pyodbc
 import time
@@ -8,6 +9,8 @@ import warnings
 from scipy.fftpack import dstn
 import loadsql #functions to load sql queries
 
+from datetime import datetime
+from IPython.display import display
 
 import numpy as np
 import pandas as pd
@@ -37,55 +40,99 @@ connection_to_sql = pyodbc.connect('DSN={dsn_name}'.format(dsn_name = dsn))
 
 ##### May take long time to run & load #####
 
-bdx_board_char_type = 'Overall Board Characteristics'
+start_date = {}
+end_date = {}
+
+bdx_board_char_type = "\'Overall Board Characteristics\'"
+start_date[0] = "\'2017-01-01\'"
+end_date[0] = "\'2021-12-31\'"
+
+start_date[1] = "\'2012-01-01\'"
+end_date[1] = "\'2016-12-31\'"
+
+start_date[2] = "\'2007-01-01\'"
+end_date[2] = "\'2011-12-31\'"
+
 
 start_time = time.time()
 
 ## excluded nationality 0, gender ratio 100, current date
 ## only included 'Overall Board Characteristics'
 
-sql_query_1 = loadsql.get_sql_q('1.bdx_sf.sql',show=0,connection=dsn, skipSubsCheck=1).format(bdx_board_char_type=bdx_board_char_type)
-with warnings.catch_warnings():
-    warnings.simplefilter('ignore', UserWarning)
-    df_1 = pd.read_sql(sql_query_1,connection_to_sql)
+## Loading S&P 500 and Russell 3000 Universes
+
+r3000_query = {}
+sp500_query = {}
+r3000_result = {}
+sp500_result = {}
+
+for x in range(len(end_date)):
+    r3000_query[x]  = loadsql.get_sql_q('1.bdx_sf.sql',show=0,connection=dsn, skipSubsCheck=1).format(bdx_board_char_type=bdx_board_char_type,start_date_x=start_date[x], end_date_x=end_date[x])
+    with warnings.catch_warnings():
+        warnings.simplefilter('ignore', UserWarning)
+        r3000_result[x] = pd.read_sql(r3000_query[x],connection_to_sql)
 
 
-sql_query_2 = loadsql.get_sql_q('1.bdx_sp50_sf.sql',show=0,connection=dsn, skipSubsCheck=1).format(bdx_board_char_type=bdx_board_char_type)
-with warnings.catch_warnings():
-    warnings.simplefilter('ignore', UserWarning)
-    df_2 = pd.read_sql(sql_query_2,connection_to_sql)
+for x in range(len(end_date)):
+    sp500_query[x]  = loadsql.get_sql_q('1.bdx_sp50_sf.sql',show=0,connection=dsn, skipSubsCheck=1).format(bdx_board_char_type=bdx_board_char_type,start_date_x=start_date[x], end_date_x=end_date[x])
+    with warnings.catch_warnings():
+        warnings.simplefilter('ignore', UserWarning)
+        sp500_result[x] = pd.read_sql(sp500_query[x],connection_to_sql)
+
 
 print("Process finished --- %s seconds ---" % (time.time() - start_time))
 
-# %%
 
-
-df_1.head(30)
 
 # %%
 
-#df_1.info(verbose=True)
-#print(df_1.isnull().any())
+## Verify DataFrame
 
-
-print(df_1.shape)
-print(df_2.shape)
+r3000_result[0].head(10)
 
 # %%
 
-#feature engineering
+#df_0.info(verbose=True)
+#print(df_0.isnull().any())
 
-df_1['DATETIME'] = pd.to_datetime(df_1['DATETIME']) #datetime
-data_1 = df_1.set_index('BDX_COMPANY_ID') #company ID as index
-data_1 = data_1.dropna(subset=['FF_ROE','FF_ROA','FF_ROTC'])
+## Print Shape
 
-df_2['DATETIME'] = pd.to_datetime(df_2['DATETIME']) #datetime
-data_2 = df_2.set_index('BDX_COMPANY_ID') #company ID as index
-data_2 = data_2.dropna(subset=['FF_ROE','FF_ROA','FF_ROTC'])
+for x in range(len(r3000_result)):
+    print('r3000 ' + str(datetime.strptime(start_date[x], "'%Y-%m-%d'").date()) + ' - ' + str(datetime.strptime(end_date[x], "'%Y-%m-%d'").date()) + ': ' +str(r3000_result[x].shape))
+
+print('\n')
+
+for x in range(len(sp500_result)):
+    print('sp500 ' + str(datetime.strptime(start_date[x], "'%Y-%m-%d'").date()) + ' - ' + str(datetime.strptime(end_date[x], "'%Y-%m-%d'").date()) + ': ' +str(sp500_result[x].shape))
 
 
-print(data_1.shape)
-print(data_2.shape)
+# %%
+
+# feature engineering
+
+
+data = {}
+
+for x in range(len(r3000_result)):
+    r3000_result[x]['DATETIME'] = pd.to_datetime(r3000_result[x]['DATETIME']) #datetime
+    r3000_result[x].set_index('BDX_COMPANY_ID', inplace = True) #company ID as index
+    r3000_result[x].dropna(subset=['FF_ROE','FF_ROA','FF_ROTC'], inplace = True) #removing Null fields
+
+for x in range(len(sp500_result)):
+    sp500_result[x]['DATETIME'] = pd.to_datetime(sp500_result[x]['DATETIME']) #datetime
+    sp500_result[x].set_index('BDX_COMPANY_ID', inplace = True) #company ID as index
+    sp500_result[x].dropna(subset=['FF_ROE','FF_ROA','FF_ROTC'], inplace = True) #removing Null fields
+
+# verify shape after dropping NAs
+
+for x in range(len(r3000_result)):
+    print('r3000 ' + str(datetime.strptime(start_date[x], "'%Y-%m-%d'").date()) + ' - ' + str(datetime.strptime(end_date[x], "'%Y-%m-%d'").date()) + ': ' +str(r3000_result[x].shape))
+
+print('\n')
+
+for x in range(len(sp500_result)):
+    print('sp500 ' + str(datetime.strptime(start_date[x], "'%Y-%m-%d'").date()) + ' - ' + str(datetime.strptime(end_date[x], "'%Y-%m-%d'").date()) + ': ' +str(sp500_result[x].shape))
+
 
 #%%
 
@@ -99,38 +146,53 @@ print(data_2.shape)
 # scaled_df.head()
 
 
-
-#%%
-
-# Russell 3000
-
-rho = data_1.corr()
-pval = data_1.corr(method=lambda x, y: pearsonr(x, y)[1]) - np.eye(*rho.shape)
-p = pval.applymap(lambda x: ''.join(['*' for t in [0.01,0.05,0.1] if x<=t]))
-result_1 = rho.round(2).astype(str) + p
-
-#%%
-
-result_1[['FF_ROA','FF_ROE','FF_ROTC']].loc[~result_1.index.isin(['FF_ROA','FF_ROE','FF_ROTC'])]
-
-#%%
-
-#SP 500
-
-rho = data_2.corr()
-pval = data_2.corr(method=lambda x, y: pearsonr(x, y)[1]) - np.eye(*rho.shape)
-p = pval.applymap(lambda x: ''.join(['*' for t in [0.01,0.05,0.1] if x<=t]))
-result_2 = rho.round(2).astype(str) + p
-
-result_2[['FF_ROA','FF_ROE','FF_ROTC']].loc[~result_2.index.isin(['FF_ROA','FF_ROE','FF_ROTC'])]
-
+#data_0 = pd.DataFrame(np.random.randint(0,1000,size=(20, 40)))
 
 
 #%%
 
+# storing stats
 
-result_1[['FF_ROA','FF_ROE','FF_ROTC']].loc[~result_1.index.isin(['FF_ROA','FF_ROE','FF_ROTC'])].to_excel("output_correl_r3000.xlsx", engine='xlsxwriter')
-result_2[['FF_ROA','FF_ROE','FF_ROTC']].loc[~result_2.index.isin(['FF_ROA','FF_ROE','FF_ROTC'])].to_excel("output_correl_sp50.xlsx", engine='xlsxwriter')
+r3000_result_stat = {}
+sp500_result_stat = {}
+
+for x in range(len(r3000_result)):
+    rho = r3000_result[x].corr()
+    pval = r3000_result[x].corr(method=lambda i, y: pearsonr(i, y)[1]) - np.eye(*rho.shape)
+    p = pval.applymap(lambda i: ''.join(['*' for t in [0.01,0.05,0.1] if i<=t]))
+    r3000_result_stat[x] = rho.round(2).astype(str) + p
+    r3000_result_stat[x] = r3000_result_stat[x][['FF_ROA','FF_ROE','FF_ROTC']].loc[~r3000_result_stat[x].index.isin(['FF_ROA','FF_ROE','FF_ROTC'])]
+
+for x in range(len(sp500_result)):
+    rho = sp500_result[x].corr()
+    pval = sp500_result[x].corr(method=lambda i, y: pearsonr(i, y)[1]) - np.eye(*rho.shape)
+    p = pval.applymap(lambda i: ''.join(['*' for t in [0.01,0.05,0.1] if i<=t]))
+    sp500_result_stat[x] = rho.round(2).astype(str) + p
+    sp500_result_stat[x] = sp500_result_stat[x][['FF_ROA','FF_ROE','FF_ROTC']].loc[~sp500_result_stat[x].index.isin(['FF_ROA','FF_ROE','FF_ROTC'])]
+
+
+#%%
+
+# printing tats
+
+for x in range(len(r3000_result)):
+    display(r3000_result_stat[x].style.set_caption('Russell 3000 Year: ' + str(datetime.strptime(start_date[x], "'%Y-%m-%d'").date()) + ' - ' + str(datetime.strptime(end_date[x], "'%Y-%m-%d'").date())))
+    
+for x in range(len(sp500_result)):
+    display(sp500_result_stat[x].style.set_caption('S&P 500 Year: ' + str(datetime.strptime(start_date[x], "'%Y-%m-%d'").date()) + ' - ' + str(datetime.strptime(end_date[x], "'%Y-%m-%d'").date())))
+
+
+#%%
+
+# output excel
+
+writer = pd.ExcelWriter('correl_results.xlsx',engine='xlsxwriter')   
+col = 0
+for x in range(len(r3000_result)):
+    r3000_result_stat[x].to_excel(writer,sheet_name='r3000',startrow=0 , startcol=col) 
+    sp500_result_stat[x].to_excel(writer,sheet_name='sp500',startrow=0 , startcol=col)     
+    col = col + len(r3000_result_stat[x].columns) + 2
+writer.save()
 
 
 #%%
