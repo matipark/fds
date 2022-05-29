@@ -1,6 +1,5 @@
 #%%
 
-from locale import D_FMT
 import pandas as pd
 import pyodbc
 import time
@@ -173,7 +172,7 @@ for x in range(len(sp500_result)):
 
 #%%
 
-# printing tats
+# printing stats
 
 for x in range(len(r3000_result)):
     display(r3000_result_stat[x].style.set_caption('Russell 3000 Year: ' + str(datetime.strptime(start_date[x], "'%Y-%m-%d'").date()) + ' - ' + str(datetime.strptime(end_date[x], "'%Y-%m-%d'").date())))
