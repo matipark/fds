@@ -1,4 +1,5 @@
-# Toolkit for FDF V2 portal
+# FDF V2 portal toolkit
+### Latest release v2.4
 
 This tool will pick up the required fields from the excel file and automatically select tables/column in the filtering portal
 
