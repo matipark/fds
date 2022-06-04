@@ -17,6 +17,10 @@ join "FDS"."SYM_V1"."SYM_COVERAGE" d on c.factset_id = d.fsym_security_id
 join "FDS"."FF_V3"."FF_ADVANCED_AF" e on d.fsym_id = e.fsym_id and datetime = e.date
 join "FDS"."FF_V3"."FF_BASIC_DER_AF" f on e.fsym_id = f.fsym_id and f.date = e.date
 join "FDS"."FF_V3"."FF_ADVANCED_DER_AF" g on f.fsym_id = g.fsym_id and f.date = g.date
+join "FDS"."SYM_V1"."SYM_SEC_ENTITY" h on d.fsym_regional_id = h.fsym_id
+join "FDS"."MCV_V1"."MCV_FACTSET_ID_MAP" i on h.factset_entity_id = i.factset_id
+join "FDS"."MCV_V1"."MCV_FIDUCIARY" j on i.provider_id = j.mcv_company_id and j.mcv_date = g.date
+join "FDS"."MCV_V1"."MCV_RANKS" k on i.provider_id = k.mcv_company_id and k.mcv_date = g.date
 
 where datetime between {start_date_x} and {end_date_x} and a.bdx_nationality_mix <> 0 and a.bdx_gender_ratio <> 100 and a.bdx_board_char_type = {bdx_board_char_type} and d.fsym_id in 
 

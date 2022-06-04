@@ -42,6 +42,9 @@ connection_to_sql = pyodbc.connect('DSN={dsn_name}'.format(dsn_name = dsn))
 start_date = {}
 end_date = {}
 
+## excluded nationality 0, gender ratio 100, current date
+## only included 'Overall Board Characteristics'
+
 bdx_board_char_type = "\'Overall Board Characteristics\'"
 start_date[0] = "\'2017-01-01\'"
 end_date[0] = "\'2021-12-31\'"
@@ -54,9 +57,6 @@ end_date[2] = "\'2011-12-31\'"
 
 
 start_time = time.time()
-
-## excluded nationality 0, gender ratio 100, current date
-## only included 'Overall Board Characteristics'
 
 ## Loading S&P 500 and Russell 3000 Universes
 
@@ -71,17 +71,13 @@ for x in range(len(end_date)):
         warnings.simplefilter('ignore', UserWarning)
         r3000_result[x] = pd.read_sql(r3000_query[x],connection_to_sql)
 
-
 for x in range(len(end_date)):
     sp500_query[x]  = loadsql.get_sql_q('1.bdx_sp50_sf.sql',show=0,connection=dsn, skipSubsCheck=1).format(bdx_board_char_type=bdx_board_char_type,start_date_x=start_date[x], end_date_x=end_date[x])
     with warnings.catch_warnings():
         warnings.simplefilter('ignore', UserWarning)
         sp500_result[x] = pd.read_sql(sp500_query[x],connection_to_sql)
 
-
 print("Process finished --- %s seconds ---" % (time.time() - start_time))
-
-
 
 # %%
 
@@ -109,9 +105,6 @@ for x in range(len(sp500_result)):
 
 # feature engineering
 
-
-data = {}
-
 for x in range(len(r3000_result)):
     r3000_result[x]['DATETIME'] = pd.to_datetime(r3000_result[x]['DATETIME']) #datetime
     r3000_result[x].set_index('BDX_COMPANY_ID', inplace = True) #company ID as index
@@ -134,6 +127,8 @@ for x in range(len(sp500_result)):
 
 
 #%%
+
+#data = {}
 
 #Normalization
 #data['FF_ROE']  = [float(i)/sum(data['FF_ROE']) for i in data['FF_ROE']]

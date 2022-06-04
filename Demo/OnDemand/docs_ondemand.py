@@ -48,7 +48,7 @@ json_object = {
 
 OTP_url = 'https://auth.factset.com/fetchotpv1' 
 payload = json.dumps(json_object) 
-header = {'Content-Type': 'application/json'}
+header = {'Content-Type': 'application/json'} 
 
 r = requests.post(OTP_url, data=payload, headers=header)
 
