@@ -86,30 +86,29 @@ print('driver directory: ', resource_path('./driver/chromedriver.exe')) # to che
 
 primary_keys = []
 
-class required_check:
-    def universe_check(data,i):
-        if filtering_sym_hub == '':
-            pass
-        else:
-            del data['submits'][i]['universeInputs'] # it is going to delete/input Universe by default
-            data['submits'][i]['universeInputs'] = [{'source': "Archive", 'fileType': "Txt", 'fileName': universe_name, 'fileToUnzip': ""}]  
+def universe_check(data,i):
+    if filtering_sym_hub == '':
+        pass
+    else:
+        del data['submits'][i]['universeInputs'] # it is going to delete/input Universe by default
+        data['submits'][i]['universeInputs'] = [{'source': "Archive", 'fileType': "Txt", 'fileName': universe_name, 'fileToUnzip': ""}]  
 
-    def filter_check(data,i,j):
-        if requested_fields == '':
-            pass
-        else:
-            fields_all = list(dict.fromkeys(primary_keys + requested_fields)) # remove duplicates from the list
-            fields = list (set(fields_all) & set(data['submits'][i]['files'][j]['fields'])) # check overlap between filtering fields and table fields
-            del data['submits'][i]['files'][j]['fields'] 
-            data['submits'][i]['files'][j]['fields'] = fields
-            print (data['submits'][i]['files'][j]['fields'])
+def filter_check(data,i,j):
+    if requested_fields == '':
+        pass
+    else:
+        fields_all = list(dict.fromkeys(primary_keys + requested_fields)) # remove duplicates from the list
+        fields = list (set(fields_all) & set(data['submits'][i]['files'][j]['fields'])) # check overlap between filtering fields and table fields
+        del data['submits'][i]['files'][j]['fields'] 
+        data['submits'][i]['files'][j]['fields'] = fields
+        print (data['submits'][i]['files'][j]['fields'])
 
-    def query_check(data,i,j,filtering):
-        if filtering == '':
-            pass
-        else:
-            del data['submits'][i]['files'][j]['query'] 
-            data['submits'][i]['files'][j]['query'] = filtering
+def query_check(data,i,j,filtering):
+    if filtering == '':
+        pass
+    else:
+        del data['submits'][i]['files'][j]['query'] 
+        data['submits'][i]['files'][j]['query'] = filtering
 
 def interceptor(request, response):  # A response interceptor takes two args
     if request.url == 'https://cts-fdf.apps.factset.com/services/data-dictionary/ucf/table/fields':
@@ -126,52 +125,52 @@ def interceptor2(request):
         data = json.loads(body)
         for i in range(len(data['submits'])):
             if bool(re.match('ff_b(.*)_v3', data['submits'][i]['bundleName'])) == True: # looking for ff_basic tables first
-                required_check.universe_check(data,i)
+                universe_check(data,i)
                 for j in range(len(data['submits'][i]['files'])):
                     if bool(re.match('ff_basic_cf_(..).txt', data['submits'][i]['files'][j]['fileName'])) == True: # finding _cf_ tables as they are unique
-                        required_check.filter_check(data,i,j)
-                        required_check.query_check(data,i,j,filtering_ff_cf)
+                        filter_check(data,i,j)
+                        query_check(data,i,j,filtering_ff_cf)
                     else:
-                        required_check.filter_check(data,i,j)
-                        required_check.query_check(data,i,j,filtering_ff)
+                        filter_check(data,i,j)
+                        query_check(data,i,j,filtering_ff)
             elif bool(re.match('ff_a(.*)_v3', data['submits'][i]['bundleName'])) == True: # looking for advanced tables
-                required_check.universe_check(data,i)
+                universe_check(data,i)
                 for j in range(len(data['submits'][i]['files'])):
-                    required_check.filter_check(data,i,j)
-                    required_check.query_check(data,i,j,filtering_ff)
+                    filter_check(data,i,j)
+                    query_check(data,i,j,filtering_ff)
             elif bool(re.match('fe_basic_a(.*)_v4', data['submits'][i]['bundleName'])) == True: # looking for fe basic tables
-                required_check.universe_check(data,i)
+                universe_check(data,i)
                 for j in range(len(data['submits'][i]['files'])):
-                    required_check.filter_check(data,i,j)
-                    required_check.query_check(data,i,j,filtering_fe_a)
+                    filter_check(data,i,j)
+                    query_check(data,i,j,filtering_fe_a)
             elif bool(re.match('fe_basic_c(.*)_v4', data['submits'][i]['bundleName'])) == True: # looking for fe basic tables
-                required_check.universe_check(data,i)
+                universe_check(data,i)
                 for j in range(len(data['submits'][i]['files'])):
-                    required_check.filter_check(data,i,j)
-                    required_check.query_check(data,i,j,filtering_fe_c)
+                    filter_check(data,i,j)
+                    query_check(data,i,j,filtering_fe_c)
             elif bool(re.match('fe_basic_g(.*)_v4', data['submits'][i]['bundleName'])) == True: # looking for fe basic tables
-                required_check.universe_check(data,i)
+                universe_check(data,i)
                 for j in range(len(data['submits'][i]['files'])):
-                    required_check.filter_check(data,i,j)
-                    required_check.query_check(data,i,j,filtering_fe_g)
+                    filter_check(data,i,j)
+                    query_check(data,i,j,filtering_fe_g)
             elif bool(re.match('fe_advanced_a(.*)_v4', data['submits'][i]['bundleName'])) == True: # looking for fe advanced tables
-                required_check.universe_check(data,i)
+                universe_check(data,i)
                 for j in range(len(data['submits'][i]['files'])):
-                    required_check.filter_check(data,i,j)
-                    required_check.query_check(data,i,j,filtering_fe_adv_a)
+                    filter_check(data,i,j)
+                    query_check(data,i,j,filtering_fe_adv_a)
             elif bool(re.match('fe_advanced_c(.*)_v4', data['submits'][i]['bundleName'])) == True: # looking for fe advanced tables
-                required_check.universe_check(data,i)
+                universe_check(data,i)
                 for j in range(len(data['submits'][i]['files'])):
-                    required_check.filter_check(data,i,j)
-                    required_check.query_check(data,i,j,filtering_fe_adv_c)
+                    filter_check(data,i,j)
+                    query_check(data,i,j,filtering_fe_adv_c)
             elif bool(re.match('fe_advanced_g(.*)_v4', data['submits'][i]['bundleName'])) == True: # looking for fe advanced tables
-                required_check.universe_check(data,i)
+                universe_check(data,i)
                 for j in range(len(data['submits'][i]['files'])):
-                    required_check.filter_check(data,i,j)
-                    required_check.query_check(data,i,j,filtering_fe_adv_g)
+                    filter_check(data,i,j)
+                    query_check(data,i,j,filtering_fe_adv_g)
             elif bool(re.match('sym_(.*)hub_v1', data['submits'][i]['bundleName'])) == True: # hub does not have filtering option
                 for j in range(len(data['submits'][i]['files'])): 
-                    required_check.query_check(data,i,j,filtering_sym_hub)
+                    query_check(data,i,j,filtering_sym_hub)
             else:
                 print ('bundle not included: ' + data['submits'][i]['bundleName'])
         request.body = json.dumps(data).encode('utf-8')
