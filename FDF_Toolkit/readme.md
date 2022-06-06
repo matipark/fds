@@ -15,17 +15,17 @@ This toolkit will pick up the required fields from the excel file and automatica
 3. Symbology
 
 
-## Excel template
+## How to use
 
-Name: fdf_custom.xlsm 
+Download and copy over the latest version of the toolkit to Virtual Environment together with the excel template that contains the list of the fields and queries.
 
-This file must be copied over to Virtual Environment together with the latest version of the toolkit
+Name of the excel file should not be changed.
 
-## Fields (first sheet)
+## Fields (Excel first sheet)
 
 First tab requires fields only - this list will be applied to all tables that have these fields available. You don't need to add the primary key for each table as they will be picked up automatically. You can leave this page empty if you don't need this functionality or you already have the fields filter setup on the portal and you want to keep it as is. Symbology table does not support filtering by fields.
 
-## Queries (second sheet)
+## Queries (Excel second sheet)
 
 Second tab requires bundle names in the column A and queries in the column B. You can leave this page empty if not needed.
 
