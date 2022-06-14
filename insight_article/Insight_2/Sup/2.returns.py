@@ -5,7 +5,6 @@ import pyodbc
 import time
 import warnings
 
-from scipy.fftpack import dstn
 import loadsql #functions to load sql queries
 
 from datetime import datetime
@@ -13,18 +12,7 @@ from IPython.display import display
 
 import numpy as np
 import pandas as pd
-from sklearn import datasets
-import seaborn as sns
-from sklearn.feature_selection import RFE
-from sklearn.model_selection import train_test_split
-from sklearn.model_selection import cross_val_score
-from sklearn.model_selection import KFold
-from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import StandardScaler
-import matplotlib.pyplot as plt
 
-from sklearn import preprocessing
-from scipy.stats import pearsonr
 
 #%%
 
@@ -58,8 +46,11 @@ print("Process finished --- %s seconds ---" % (time.time() - start_time))
 r3000_result['quintile_gender'] = pd.cut(r3000_result['BDX_GENDER_RATIO'], 4) # around mid is best, 100 means man
 r3000_result['quintile_nationality'] = pd.cut(r3000_result['BDX_NATIONALITY_MIX'], 4)
 
-r3000_result['quals_ratio'] = r3000_result['BDX_AVG_QUALS'].div(r3000_result['BDX_NUMBER_DIRECTORS'], axis=0) # ratio of qualifications / number of board members
-r3000_result['quintile_quals'] = pd.cut(r3000_result['quals_ratio'], 4)
+r3000_result['quintile_quals'] = pd.cut(r3000_result['BDX_AVG_QUALS'], 4)
+
+
+# r3000_result['quals_ratio'] = r3000_result['BDX_AVG_QUALS'].div(r3000_result['BDX_NUMBER_DIRECTORS'], axis=0) # ratio of qualifications / number of board members
+# r3000_result['quintile_quals'] = pd.cut(r3000_result['quals_ratio'], 4)
 
 r3000_result['BDX_GENDER_RATIO'].head()
 

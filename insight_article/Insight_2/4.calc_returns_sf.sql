@@ -1,25 +1,11 @@
 
-select last_day(
-  
-  
-case 
 
-when BDX_ANNUAL_REPORT_DATE = 'Current' then CURRENT_DATE()
-else date(replace(concat('1 ', BDX_ANNUAL_REPORT_DATE), ' ', '-'))
+select year(p_date) as date_year, fsym_id, EXP(SUM(LN(1+(one_day_pct/100))))-1 as ann_return
+from  "FDS"."FP_V2"."FP_TOTAL_RETURNS_DAILY"
+where fsym_id in
 
-end
-  
-) as datetime, a.*, f.FF_ROA, f.FF_ROE, f.FF_ROTC, f.FF_GROSS_MGN, f.FF_OPER_MGN, f.FF_PTX_MGN, f.FF_NET_MGN, g.ff_gen_ind
-from "FDS"."BDX_V1"."BDX_BOARD_CHAR" a 
-join "FDS"."BDX_V1"."BDX_COMPANY_STOCKS" b on a.bdx_company_id = b.bdx_company_id --converting company level ticker to security level 
-join "FDS"."BDX_V1"."BDX_FACTSET_ID_MAP" c on c.provider_id = b.bdx_security_id --mapping security level to security level 
-join "FDS"."SYM_V1"."SYM_COVERAGE" d on c.factset_id = d.fsym_security_id -- pick up security level 
-join "FDS"."FF_V3"."FF_BASIC_DER_AF" f on d.fsym_id = f.fsym_id and f.date = datetime
-join "FDS"."FF_V3"."FF_SEC_COVERAGE" g on f.fsym_id = g.fsym_id
-
-where datetime between {start_date_x} and {end_date_x} and a.bdx_board_char_type = {bdx_board_char_type} and a.bdx_nationality_mix <> 0 and a.bdx_gender_ratio <> 100 and b.bdx_primary_flag = 'TRUE' and d.fsym_id in 
-
-('GTX9GD-R',
+(
+'GTX9GD-R',
 'F07Q7W-R',
 'RCGBPW-R',
 'QDX24Z-R',
@@ -3052,6 +3038,6 @@ where datetime between {start_date_x} and {end_date_x} and a.bdx_board_char_type
 'BFS0V5-R',
 'N3FSJD-R',
 'B71DJZ-R'
-);
+)
 
-
+group by year(p_date), fsym_id
