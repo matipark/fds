@@ -1,10 +1,11 @@
 
-select distinct f.MCV_COMPANY_ID, c.fsym_regional_id as FSYM_ID, f.MCV_COMPANY_NAME, year(f.MCV_DATE) as DATE_YEAR, f.MCV_CEO_RANK, f.MCV_TEAM_RANK, f.MCV_INDUSTRY, a.FF_MKT_VAL, b.ff_gen_ind
+select distinct f.MCV_COMPANY_ID, c.fsym_regional_id as FSYM_ID, f.MCV_COMPANY_NAME, year(f.MCV_DATE) as DATE_YEAR, f.MCV_CEO_RANK, f.MCV_TEAM_RANK, f.MCV_INDUSTRY, a.FF_MKT_VAL, a.FF_ROE, a.FF_ROTC, map.FACTSET_SECTOR_DESC
 from "FDS"."FF_V3"."FF_BASIC_DER_AF" a 
-join "FDS"."FF_V3"."FF_SEC_COVERAGE" b on a.fsym_id = b.fsym_id
-join "FDS"."SYM_V1"."SYM_COVERAGE" c on b.fsym_id = c.fsym_regional_id
+join "FDS"."SYM_V1"."SYM_COVERAGE" c on a.fsym_id = c.fsym_regional_id
 join "FDS"."SYM_V1"."SYM_SEC_ENTITY" d on c.fsym_id = d.fsym_id
-join "FDS"."MCV_V1"."MCV_FACTSET_ID_MAP" e on d.factset_entity_id = e.factset_id
+JOIN "FDS"."SYM_V1"."SYM_ENTITY_SECTOR" sec on sec.factset_entity_id = d.factset_entity_id
+join "FDS"."REF_V2"."FACTSET_SECTOR_MAP" map on sec.SECTOR_CODE = map.FACTSET_SECTOR_CODE
+join "FDS"."MCV_V1"."MCV_FACTSET_ID_MAP" e on sec.factset_entity_id = e.factset_id
 join "FDS"."MCV_V1"."MCV_RANKS" f on e.provider_id = f.mcv_company_id and f.mcv_date = a.date
 
 where c.fsym_regional_id in 

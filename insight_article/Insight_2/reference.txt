@@ -7,3 +7,6 @@ https://www.codingfinance.com/post/2018-04-05-portfolio-returns-py/
 
 break down roa/roe
 longer time periods (5 yrs)
+
+
+https://dominikkoch.github.io/Bump-Chart/

@@ -5,7 +5,6 @@ import pyodbc
 import time
 import warnings
 
-
 import loadsql #functions to load sql queries
 
 from datetime import datetime
@@ -14,21 +13,6 @@ from IPython.display import display
 import numpy as np
 import pandas as pd
 from scipy.stats import pearsonr
-
-
-# from scipy.fftpack import dstn
-# from sklearn import datasets
-# import seaborn as sns
-# from sklearn.feature_selection import RFE
-# from sklearn.model_selection import train_test_split
-# from sklearn.model_selection import cross_val_score
-# from sklearn.model_selection import KFold
-# from sklearn.pipeline import Pipeline
-# from sklearn.preprocessing import StandardScaler
-# import matplotlib.pyplot as plt
-
-# from sklearn import preprocessing
-# from scipy.stats import pearsonr
 
 # connecting python with SQL 
 dsn = 'SF'
@@ -48,7 +32,7 @@ end_date = {}
 ## only included 'Overall Board Characteristics'
 
 bdx_board_char_type = "\'Overall Board Characteristics\'"
-start_date[0] = "\'2017-01-01\'"
+start_date[0] = "\'2007-01-01\'"
 end_date[0] = "\'2021-12-31\'"
 
 start_date[1] = "\'2012-01-01\'"
@@ -78,14 +62,14 @@ for x in range(len(end_date)):
     with warnings.catch_warnings():
         warnings.simplefilter('ignore', UserWarning)
         r3000_result[x] = pd.read_sql(r3000_query[x],connection_to_sql)
-        print("Process finished --- %s seconds ---" % (time.time() - start_time))
+        print("BDX R3000 Process finished --- %s seconds ---" % (time.time() - start_time))
 
 for x in range(len(end_date)):
     sp500_query[x] = loadsql.get_sql_q('1.bdx_sp50_sf.sql',show=0,connection=dsn, skipSubsCheck=1).format(bdx_board_char_type=bdx_board_char_type,start_date_x=start_date[x], end_date_x=end_date[x])
     with warnings.catch_warnings():
         warnings.simplefilter('ignore', UserWarning)
         sp500_result[x] = pd.read_sql(sp500_query[x],connection_to_sql)
-        print("Process finished --- %s seconds ---" % (time.time() - start_time))
+        print("BDX S&P500 Process finished --- %s seconds ---" % (time.time() - start_time))
 
 # MCV
 
@@ -96,14 +80,14 @@ for x in range(len(end_date)):
     with warnings.catch_warnings():
         warnings.simplefilter('ignore', UserWarning)
         r3000_mcv_result[x] = pd.read_sql(r3000_mcv_query[x],connection_to_sql)
-        print("Process finished --- %s seconds ---" % (time.time() - start_time))
+        print("MCV R3000 Process finished --- %s seconds ---" % (time.time() - start_time))
 
 for x in range(len(end_date)):
     sp500_mcv_query[x] = loadsql.get_sql_q('1.bdx_sp50_sf_MCV.sql',show=0,connection=dsn, skipSubsCheck=1).format(start_date_x=start_date[x], end_date_x=end_date[x])
     with warnings.catch_warnings():
         warnings.simplefilter('ignore', UserWarning)
         sp500_mcv_result[x] = pd.read_sql(sp500_mcv_query[x],connection_to_sql)
-        print("Process finished --- %s seconds ---" % (time.time() - start_time))
+        print("MCV S&P500 Process finished --- %s seconds ---" % (time.time() - start_time))
 
 
 #%%
@@ -157,23 +141,23 @@ for x in range(len(sp500_mcv_result)):
 for x in range(len(r3000_result)):
     r3000_result[x]['DATETIME'] = pd.to_datetime(r3000_result[x]['DATETIME']) #datetime
     r3000_result[x].set_index('BDX_COMPANY_ID', inplace = True) #company ID as index
-    r3000_result[x].dropna(subset=['FF_ROE','FF_ROA','FF_ROTC','FF_GROSS_MGN', 'FF_OPER_MGN', 'FF_PTX_MGN', 'FF_NET_MGN'], inplace = True) #removing Null fields
+    r3000_result[x].dropna(subset=['FF_ROE','FF_ROA','FF_ROTC'], inplace = True) #removing Null fields
 
 for x in range(len(sp500_result)):
     sp500_result[x]['DATETIME'] = pd.to_datetime(sp500_result[x]['DATETIME']) #datetime
     sp500_result[x].set_index('BDX_COMPANY_ID', inplace = True) #company ID as index
-    sp500_result[x].dropna(subset=['FF_ROE','FF_ROA','FF_ROTC','FF_GROSS_MGN', 'FF_OPER_MGN', 'FF_PTX_MGN', 'FF_NET_MGN'], inplace = True) #removing Null fields
+    sp500_result[x].dropna(subset=['FF_ROE','FF_ROA','FF_ROTC'], inplace = True) #removing Null fields
 
 
 for x in range(len(r3000_mcv_result)):
     r3000_mcv_result[x]['MCV_DATE'] = pd.to_datetime(r3000_mcv_result[x]['MCV_DATE']) #datetime
     r3000_mcv_result[x].set_index('MCV_COMPANY_ID', inplace = True) #company ID as index
-    r3000_mcv_result[x].dropna(subset=['FF_ROE','FF_ROA','FF_ROTC','FF_GROSS_MGN', 'FF_OPER_MGN', 'FF_PTX_MGN', 'FF_NET_MGN'], inplace = True) #removing Null fields
+    r3000_mcv_result[x].dropna(subset=['FF_ROE','FF_ROA','FF_ROTC'], inplace = True) #removing Null fields
 
 for x in range(len(sp500_result)):
     sp500_mcv_result[x]['MCV_DATE'] = pd.to_datetime(sp500_mcv_result[x]['MCV_DATE']) #datetime
     sp500_mcv_result[x].set_index('MCV_COMPANY_ID', inplace = True) #company ID as index
-    sp500_mcv_result[x].dropna(subset=['FF_ROE','FF_ROA','FF_ROTC','FF_GROSS_MGN', 'FF_OPER_MGN', 'FF_PTX_MGN', 'FF_NET_MGN'], inplace = True) #removing Null fields
+    sp500_mcv_result[x].dropna(subset=['FF_ROE','FF_ROA','FF_ROTC'], inplace = True) #removing Null fields
 
 
 
@@ -230,29 +214,31 @@ for x in range(len(r3000_result)):
     pval = r3000_result[x].corr(method=lambda i, y: pearsonr(i, y)[1]) - np.eye(*rho.shape)
     p = pval.applymap(lambda i: ''.join(['*' for t in [0.01,0.05,0.1] if i<=t]))
     r3000_result_stat[x] = rho.round(2).astype(str) + p
-    r3000_result_stat[x] = r3000_result_stat[x][['FF_ROE','FF_ROA','FF_ROTC','FF_GROSS_MGN', 'FF_OPER_MGN', 'FF_PTX_MGN', 'FF_NET_MGN']].loc[r3000_result_stat[x].index.isin(['BDX_GENDER_RATIO', 'BDX_NATIONALITY_MIX', 'BDX_AVG_QUALS'])]
+    r3000_result_stat[x] = r3000_result_stat[x][['FF_ROE','FF_ROA','FF_ROTC','FF_GROSS_MGN', 'FF_NET_MGN']].loc[r3000_result_stat[x].index.isin(['BDX_GENDER_RATIO', 'BDX_NATIONALITY_MIX', 'BDX_STDEV_QUALS', 'BDX_STDEV_AGE'])]
 
 for x in range(len(sp500_result)):
     rho = sp500_result[x].corr()
     pval = sp500_result[x].corr(method=lambda i, y: pearsonr(i, y)[1]) - np.eye(*rho.shape)
     p = pval.applymap(lambda i: ''.join(['*' for t in [0.01,0.05,0.1] if i<=t]))
     sp500_result_stat[x] = rho.round(2).astype(str) + p
-    sp500_result_stat[x] = sp500_result_stat[x][['FF_ROE','FF_ROA','FF_ROTC','FF_GROSS_MGN', 'FF_OPER_MGN', 'FF_PTX_MGN', 'FF_NET_MGN']].loc[sp500_result_stat[x].index.isin(['BDX_GENDER_RATIO', 'BDX_NATIONALITY_MIX','BDX_AVG_QUALS'])]
+    sp500_result_stat[x] = sp500_result_stat[x][['FF_ROE','FF_ROA','FF_ROTC','FF_GROSS_MGN', 'FF_NET_MGN']].loc[sp500_result_stat[x].index.isin(['BDX_GENDER_RATIO', 'BDX_NATIONALITY_MIX', 'BDX_STDEV_QUALS', 'BDX_STDEV_AGE'])]
 
 for x in range(len(r3000_mcv_result)):
     rho = r3000_mcv_result[x].corr()
     pval = r3000_mcv_result[x].corr(method=lambda i, y: pearsonr(i, y)[1]) - np.eye(*rho.shape)
     p = pval.applymap(lambda i: ''.join(['*' for t in [0.01,0.05,0.1] if i<=t]))
     r3000_mcv_result_stat[x] = rho.round(2).astype(str) + p
-    r3000_mcv_result_stat[x] = r3000_mcv_result_stat[x][['FF_ROE','FF_ROA','FF_ROTC','FF_GROSS_MGN', 'FF_OPER_MGN', 'FF_PTX_MGN', 'FF_NET_MGN']].loc[r3000_mcv_result_stat[x].index.isin(['MCV_TEAM_RANK','MCV_CEO_RANK','MCV_FIDUC_RANK'])]
+    r3000_mcv_result_stat[x] = r3000_mcv_result_stat[x][['FF_ROE','FF_ROA','FF_ROTC','FF_GROSS_MGN', 'FF_NET_MGN']].loc[r3000_mcv_result_stat[x].index.isin(['MCV_TEAM_RANK','MCV_CEO_RANK','MCV_FIDUC_RANK'])]
 
 for x in range(len(sp500_mcv_result)):
     rho = sp500_mcv_result[x].corr()
     pval = sp500_mcv_result[x].corr(method=lambda i, y: pearsonr(i, y)[1]) - np.eye(*rho.shape)
     p = pval.applymap(lambda i: ''.join(['*' for t in [0.01,0.05,0.1] if i<=t]))
     sp500_mcv_result_stat[x] = rho.round(2).astype(str) + p
-    sp500_mcv_result_stat[x] = sp500_mcv_result_stat[x][['FF_ROE','FF_ROA','FF_ROTC','FF_GROSS_MGN', 'FF_OPER_MGN', 'FF_PTX_MGN', 'FF_NET_MGN']].loc[sp500_mcv_result_stat[x].index.isin(['MCV_TEAM_RANK','MCV_CEO_RANK','MCV_FIDUC_RANK'])]
+    sp500_mcv_result_stat[x] = sp500_mcv_result_stat[x][['FF_ROE','FF_ROA','FF_ROTC','FF_GROSS_MGN', 'FF_NET_MGN']].loc[sp500_mcv_result_stat[x].index.isin(['MCV_TEAM_RANK','MCV_CEO_RANK','MCV_FIDUC_RANK'])]
 
+
+#['FF_ROE','FF_ROA','FF_ROTC','FF_GROSS_MGN', 'FF_OPER_MGN', 'FF_PTX_MGN', 'FF_NET_MGN']
 
 #%%
 
@@ -285,8 +271,9 @@ for x in range(len(r3000_result)):
     r3000_mcv_result_stat[x].to_excel(writer,sheet_name='r3000_mcv',startrow=row , startcol=0) 
     sp500_mcv_result_stat[x].to_excel(writer,sheet_name='sp500_mcv',startrow=row , startcol=0)  
     #col = col + len(r3000_result_stat[x].columns) + 2
-    row = row + len(r3000_mcv_result_stat[x]) + 2
+    row = row + len(r3000_result_stat[x]) + 2
 writer.save()
+#writer.close()
 
 
 

@@ -9,13 +9,18 @@ else date(replace(concat('1 ', BDX_ANNUAL_REPORT_DATE), ' ', '-'))
 
 end
   
-) as date_year, d.proper_name, d.fsym_regional_id as fsym_id, f.bdx_market_cap, f.iso_currency, a.*
-from "FDS"."BDX_V1"."BDX_BOARD_CHAR" a
-join "FDS"."BDX_V1"."BDX_COMPANY_STOCKS" b on a.bdx_company_id = b.bdx_company_id
-join "FDS"."BDX_V1"."BDX_FACTSET_ID_MAP" c on c.provider_id = b.bdx_security_id
-join "FDS"."SYM_V1"."SYM_COVERAGE" d on c.factset_id = d.fsym_security_id
-join "FDS"."BDX_V1"."BDX_COMPANY_MCAP" f on b.bdx_company_id = f.bdx_company_id
-where a.bdx_board_char_type = {bdx_board_char_type} and a.bdx_nationality_mix <> 0 and a.bdx_gender_ratio <> 100 and d.fsym_id in
+) as date_year, d.proper_name, d.fsym_regional_id as fsym_id, e.FF_MKT_VAL, e.FF_ROE, e.FF_ROTC, h.FACTSET_SECTOR_DESC, a.*
+from "FDS"."BDX_V1"."BDX_BOARD_CHAR" a 
+join "FDS"."BDX_V1"."BDX_COMPANY_STOCKS" b on a.bdx_company_id = b.bdx_company_id --converting company level ticker to security level 
+join "FDS"."BDX_V1"."BDX_FACTSET_ID_MAP" c on c.provider_id = b.bdx_security_id --mapping security level to security level 
+join "FDS"."SYM_V1"."SYM_COVERAGE" d on c.factset_id = d.fsym_security_id -- pick up security level 
+join "FDS"."FF_V3"."FF_BASIC_DER_AF" e on d.fsym_id = e.fsym_id and year(e.date) = date_year
+join "FDS"."SYM_V1"."SYM_SEC_ENTITY" f on d.fsym_security_id = f.fsym_id
+join "FDS"."SYM_V1"."SYM_ENTITY_SECTOR" g on f.factset_entity_id = g.factset_entity_id
+join "FDS"."REF_V2"."FACTSET_SECTOR_MAP" h on g.SECTOR_CODE = h.FACTSET_SECTOR_CODE
+
+
+where a.bdx_board_char_type = {bdx_board_char_type} and a.bdx_nationality_mix <> 0 and a.bdx_gender_ratio <> 100 and b.bdx_primary_flag = 'TRUE' and e.fsym_id in
 
 (
 'GTX9GD-R',
