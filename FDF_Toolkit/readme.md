@@ -1,5 +1,5 @@
 # FDF V2 portal toolkit
-### Latest version v2.4 (2022-06-04)
+### Latest version v2.4 w/ support for Chrome v.102 (2022-06-22)
 
 This toolkit will pick up the required fields from the excel file and automatically select tables/column in the filtering portal
 

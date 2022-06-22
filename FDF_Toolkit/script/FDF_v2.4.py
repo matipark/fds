@@ -109,6 +109,7 @@ def query_check(data,i,j,filtering):
     else:
         del data['submits'][i]['files'][j]['query'] 
         data['submits'][i]['files'][j]['query'] = filtering
+        print (data['submits'][i]['files'][j]['query'])
 
 def interceptor(request, response):  # A response interceptor takes two args
     if request.url == 'https://cts-fdf.apps.factset.com/services/data-dictionary/ucf/table/fields':
@@ -120,7 +121,7 @@ def interceptor(request, response):  # A response interceptor takes two args
                     primary_keys.append(data[i]['tableFields'][j]['name'])
 
 def interceptor2(request):
-    if request.url == 'https://cts-fdf.apps.factset.com/services/cts-fdf-api/BT_SYD_QNT/jobs/submit':
+    if bool(re.match('https://cts-fdf.apps.factset.com/services/cts-fdf-api/(.*)/jobs/submit', request.url)) == True:
         body = request.body.decode('utf-8')
         data = json.loads(body)
         for i in range(len(data['submits'])):
