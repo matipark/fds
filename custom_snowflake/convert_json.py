@@ -4,11 +4,9 @@ import pandas as pd
 
 #%%
 
-file = 'C:\\Users\\mpark\\OneDrive - FactSet\\Desktop\\CTS\\Snowflake\\FSI\\FS_ESG_MSCI_20220331_new.csv'
-json_file = 'C:\\Users\\mpark\\OneDrive - FactSet\\Desktop\\CTS\\Snowflake\\FSI\\FS_ESG_MSCI_20220331_Output.json'
+file = 'C:\\Users\\mpark\\OneDrive - FactSet\\Desktop\\CTS\\Snowflake\\FSI\\FS_ESG_MSCI_20220331_new.csv' # custom file output 
+json_file = 'C:\\Users\\mpark\\OneDrive - FactSet\\Desktop\\CTS\\Snowflake\\FSI\\FS_ESG_MSCI_20220331_Output.json' # json schema
 df = pd.read_csv(file,sep=',')
-
-
 
 # taking a look at the sample table, datatype, convert date if necessary
 
@@ -20,9 +18,6 @@ df['Effective Date'].astype('datetime64[ns]')
 
 df['Effective Date'] = pd.to_datetime(df['Effective Date'], format='%Y%m%d')
 df['Revision Date'] = pd.to_datetime(df['Revision Date'], format='%Y%m%d')
-
-
-
 
 
 #%%
@@ -69,7 +64,6 @@ else:
                      +str(col_list_null_delim)
                      +str(". Please confirm data type and enter manually below.")+"\n")
         
-
 # defining PK column
 
 col_list_pk = []
@@ -88,7 +82,6 @@ else:
         output.write(str("Some columns only have pk values: ")
                      +str(col_list_null_delim)
                      +"\n")
-
 
 
 # col_list_char = []
