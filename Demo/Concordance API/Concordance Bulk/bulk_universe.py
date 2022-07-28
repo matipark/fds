@@ -11,7 +11,7 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
-authorization = (os.getenv('username_universal'),os.getenv('pass_office')) ##pass_office/pass_home
+authorization = (os.getenv('username_universal'),os.getenv('pass_home_kr')) ##pass_office/pass_home
 
 #%%
 
@@ -22,8 +22,8 @@ authorization = (os.getenv('username_universal'),os.getenv('pass_office')) ##pas
 create_universe_endpoint = 'https://api.factset.com/content/factset-concordance/v2/universe'
 
 create_universe_request ={
-  "universeName": "Matias_2",
-  "universeDescription": "Aus Super"
+  "universeName": "Matias_5",
+  "universeDescription": "Demyst "
 }
 
 headers = {'Accept': 'application/json','Content-Type': 'application/json'}
@@ -40,7 +40,7 @@ create_universe_response.text
 ### CHECK universe
 
 # input your universeId
-universeId = 853
+universeId = 965
 
 check_universe_endpoint = 'https://api.factset.com/content/factset-concordance/v2/universes?universeId={}'.format(universeId)
 
@@ -54,7 +54,7 @@ entity_task_status_response.text
 ### Building a concordance request
 
 entity_task_endpoint = 'https://api.factset.com/content/factset-concordance/v2/entity-task'
-entity_task_file='Concordance_MP.csv' 
+entity_task_file='Concordance_1.csv' 
 entity_task_request = {
     "universeId": universeId,
     "taskName": "testing concordance",
