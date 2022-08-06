@@ -20,8 +20,8 @@ machine_sn = '1129032'
 notes = 'Implementation for fx rates from WM/R in snowflake'
 
 chrome_options = webdriver.ChromeOptions()
-chrome_options.add_argument("headless")
-driver = webdriver.Chrome(options=chrome_options)
+#chrome_options.add_argument("headless")
+driver = webdriver.Chrome(options=chrome_options, executable_path='C:/Github_repo/chromedriver.exe')
 driver.maximize_window()
 
 #%%
@@ -34,7 +34,7 @@ def file_rpd(username, imp_package, machine_sn, notes):
     for i in range (5):
         try:
             print ('Opening RPD')
-            driver.get("https://rpd.factset.io/create") # open the browser
+            driver.get("https://rpd.factset.io/create?productid=43276") # open the browser
             try:
                 WebDriverWait(driver, 3).until(EC.alert_is_present())
 
@@ -48,9 +48,9 @@ def file_rpd(username, imp_package, machine_sn, notes):
             WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.XPATH,'//*[@id="createTemplate"]/div[8]/div[2]/property/div/button[2]/span'))).click() # Medium
             WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.XPATH,'//*[@id="createTemplate"]/div[1]/div[2]/input'))).send_keys(title) # write title
 
-            driver.find_element_by_xpath('//*[@id="createTemplate"]/div[2]/div[2]/ui-productsuggest/input').send_keys('Implementation - CTS Standard Datafeed') # search category
+            # driver.find_element_by_xpath('//*[@id="createTemplate"]/div[2]/div[2]/ui-productsuggest/input').send_keys('Implementation - CTS Standard Datafeed') # search category
             
-            WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.XPATH,'//tr [@data-qa-id="product_43276"]'))).click() # select category
+            # WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.XPATH,'//tr [@data-qa-id="product_43276"]'))).click() # select category
 
             # # explicit frame id
             # frame = driver.find_element_by_xpath('//iframe [@id]').get_attribute('id')
@@ -112,3 +112,6 @@ def make_hyperlink(value):
 
 
 # %%
+
+# Reference
+# http://is.factset.com/rpd/summary.aspx?messageId=32873883
