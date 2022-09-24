@@ -22,7 +22,7 @@ authorization = (os.getenv('username_universal'),os.getenv('pass_home_kr')) ##pa
 create_universe_endpoint = 'https://api.factset.com/content/factset-concordance/v2/universe'
 
 create_universe_request ={
-  "universeName": "Matias_5",
+  "universeName": "Matias_6",
   "universeDescription": "Demyst "
 }
 
@@ -40,7 +40,7 @@ create_universe_response.text
 ### CHECK universe
 
 # input your universeId
-universeId = 965
+universeId = 968
 
 check_universe_endpoint = 'https://api.factset.com/content/factset-concordance/v2/universes?universeId={}'.format(universeId)
 
@@ -60,8 +60,8 @@ entity_task_request = {
     "taskName": "testing concordance",
     "clientIdColumn": "Identifier",
     "nameColumn": "Name",
-    # "countryColumn": "country",
-    # "stateColumn": "state",
+    "countryColumn": "Country",
+    "stateColumn": "State",
     # "urlColumn": "url"
     #"uniqueMatch": True,
     #"excludeEntityType": [ "PVT" ]
