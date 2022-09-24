@@ -6,22 +6,22 @@ from IPython.display import display
 
 #%%
 
-df = pd.read_excel(r'C:\Users\mpark\OneDrive - FactSet\Desktop\in_progress.xlsx')
+df = pd.read_excel(r'C:\Users\mpark\OneDrive - FactSet\Desktop\Shared\KR & AU Accounts.xlsx')
 
-df_na = df.dropna(subset=['Imp_rpd'])
+df_na = df.dropna(subset=['Imp. RPD'])
 df_keep = df.drop(df_na.index)
 df_keep.reset_index(drop=True, inplace=True)
 
-max = len(df.dropna(subset=['Imp_rpd']))+1
+max = len(df.dropna(subset=['Imp. RPD']))+1
 rpd_list = pd.DataFrame(columns = ['rpd_url', 'rpd_number'], index = [0, 1])
 
 display(df_keep)
 
 for index, row in df_keep.iterrows():
-    username = str(row[2])
-    imp_package = str(row[3])
-    machine_sn = row[4]
-    notes = row[5]
+    username = str(row[10]) 
+    imp_package = str(row[12])
+    machine_sn = row[9]
+    notes = row[13]
     print ('In progress: ' + username, imp_package, machine_sn, notes)
     rpd_url = p.file_rpd(username, imp_package, machine_sn, notes)
     print ('Success: ' + rpd_url)

@@ -34,7 +34,7 @@ def file_rpd(username, imp_package, machine_sn, notes):
     for i in range (5):
         try:
             print ('Opening RPD')
-            driver.get("https://rpd.factset.io/create?productid=43276") # open the browser
+            driver.get("https://rpd.factset.io/create?productid=43276") # open the browser with the product code
             try:
                 WebDriverWait(driver, 3).until(EC.alert_is_present())
 
