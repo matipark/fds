@@ -28,6 +28,7 @@ for index, row in df_keep.iterrows():
     rpd_list['rpd_url'].loc[index] = rpd_url
     rpd_number = rpd_url[-8:]
     rpd_list['rpd_number'].loc[index] = rpd_number
+    
 
 
 # test
@@ -35,8 +36,8 @@ for index, row in df_keep.iterrows():
 
 rpd_list['rpd_url'] = rpd_list['rpd_number'].apply(lambda x: p.make_hyperlink(x))
 
-with pd.ExcelWriter(r'C:\Users\mpark\OneDrive - FactSet\Desktop\in_progress.xlsx', engine='openpyxl', if_sheet_exists='overlay', mode='a') as writer:  
-    rpd_list['rpd_url'].to_excel(writer, startcol = 1, startrow=max, header = False, index = False)
+with pd.ExcelWriter(r'C:\Users\mpark\OneDrive - FactSet\Desktop\Shared\KR & AU Accounts.xlsx', engine='openpyxl', if_sheet_exists='overlay', mode='a') as writer:  
+    rpd_list['rpd_url'].to_excel(writer, startcol = 2, startrow=max, header = False, index = False)
 
 print('Update successful')
 
